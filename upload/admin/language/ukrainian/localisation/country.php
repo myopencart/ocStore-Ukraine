@@ -19,11 +19,11 @@ $_['entry_name']          		= 'Назва Країни:';
 $_['entry_iso_code_2']          	= 'Код ISO (2):';
 $_['entry_iso_code_3']          	= 'Код ISO (3):';
 $_['entry_address_format']          	= 'Формат адреси:';
-$_['entry_postcode_required']       	= 'Індекс обов\'язковий:';
+$_['entry_postcode_required']       	= 'Індекс обов’язковий:';
 $_['entry_status']          		= 'Статус:';
 
 // Help
-$_['help_address_format']          	= 'Ім\'я = {firstname}<br />Прізвище = {lastname}<br />Компания = {company}<br />Адреса 1 = {address_1}<br />Адреса 2 = {address_2}<br />Місто = {city}<br />Індекс = {postcode}<br />Регіон = {zone}<br />Код регіона = {zone_code}<br />Країна = {country}';
+$_['help_address_format']          	= 'Ім’я = {firstname}<br />Прізвище = {lastname}<br />Компания = {company}<br />Адреса 1 = {address_1}<br />Адреса 2 = {address_2}<br />Місто = {city}<br />Індекс = {postcode}<br />Регіон = {zone}<br />Код регіона = {zone_code}<br />Країна = {country}';
 
 // Error
 $_['error_permission']          	= 'У Вас немає прав для зміни переліку Країн';

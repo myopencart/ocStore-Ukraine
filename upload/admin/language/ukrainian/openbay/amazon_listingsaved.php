@@ -11,7 +11,7 @@ $_['text_delete_confirm'] = 'Ви впевнені?';
 $_['text_complete'] 	  = 'Переліки завантажені';
 
 // Column
-$_['column_name'] 	= 'Ім\'я';
+$_['column_name'] 	= 'Ім’я';
 $_['column_model'] 	= 'Модель';
 $_['column_sku'] 	= 'Артикул';
 $_['column_amazon_sku'] = 'Артикул Amazon';

@@ -1,7 +1,7 @@
 <?php
 
 // Text
-$_['text_title']		 = 'Кредитна / Дебетова картка (WorldPay)';
+$_['text_title']		 = 'Кредитна / Розрахункова картка (WorldPay)';
 $_['text_credit_card']		 = 'Деталі картки';
 $_['text_card_type']		 = 'Тип картки: ';
 $_['text_card_name']		 = 'Назва картки: ';

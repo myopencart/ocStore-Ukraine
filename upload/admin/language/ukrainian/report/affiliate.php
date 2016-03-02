@@ -4,7 +4,7 @@ $_['heading_title'] 	= 'Звіт по Комісіям партнерів';
 // Jtext
 $_['text_list'] 	= 'Перелік партнерів по Комісіям';
 // Column
-$_['column_affiliate'] 	= 'Ім\'я партнера';
+$_['column_affiliate'] 	= 'Ім’я партнера';
 $_['column_email'] 	= 'E-Mail';
 $_['column_status'] 	= 'Статус';
 $_['column_commission'] = 'Комісія';

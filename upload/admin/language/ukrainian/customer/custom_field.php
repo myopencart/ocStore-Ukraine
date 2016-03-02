@@ -35,7 +35,7 @@ $_['entry_type']            = 'Тип поля';
 $_['entry_value']           = 'Значення';
 $_['entry_custom_value']    = 'Значення для цього поля';
 $_['entry_customer_group']  = 'Група покупців';
-$_['entry_required']        = 'Обов\'язково';
+$_['entry_required']        = 'Обов’язково';
 $_['entry_status']          = 'Статус';
 $_['entry_sort_order']      = 'Порядок сортування';
 

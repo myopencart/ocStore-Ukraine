@@ -10,7 +10,7 @@ $_['text_your_address'] = 'Вашв адреса';
 $_['text_success']      = 'Ваш обліковий запис успішно оновлено.';
 
 // Entry
-$_['entry_firstname']   = 'Ім\'я';
+$_['entry_firstname']   = 'Ім’я';
 $_['entry_lastname']    = 'Прізвище';
 $_['entry_email']       = 'E-Mail';
 $_['entry_telephone']   = 'Телефон';
@@ -26,7 +26,7 @@ $_['entry_zone']        = 'Регіон / Область';
 
 // Error
 $_['error_exists']      = 'Такий E-Mail вже зареєстрований!';
-$_['error_firstname']   = 'Ім\'я має бути від 1 до 32 символів!';
+$_['error_firstname']   = 'Ім’я має бути від 1 до 32 символів!';
 $_['error_lastname']    = 'Прізвище має бути від 1 до 32 символів!';
 $_['error_email']       = 'E-Mail адреса введена невірно!';
 $_['error_telephone']   = 'Номер телефона має бути від 3 до 32 символів!';

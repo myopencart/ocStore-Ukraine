@@ -9,6 +9,6 @@ $_['text_empty']      	= 'У Вас не було замовлень з файл
 
 // Column
 $_['column_order_id']   = '№ замовлення:';
-$_['column_name']       = 'Ім\'я:';
+$_['column_name']       = 'Ім’я:';
 $_['column_size']       = 'Розмір:';
 $_['column_date_added'] = 'Дата додавання:';

@@ -20,7 +20,7 @@ $_['text_success_recommendations'] = 'There are no listing improvement recommend
 
 // Buttons
 $_['button_view'] 		= 'Переглянути перелік';
-$_['button_remove'] 		= 'Видалити зв\'язки';
+$_['button_remove'] 		= 'Видалити зв’язки';
 $_['button_end'] 		= 'Кінець переліку';
 $_['button_retry'] 		= 'Повторити';
 
@@ -49,7 +49,7 @@ $_['help_stock_listed'] 	= 'Це поточний рівень запасів н
 $_['help_stock_reserve'] 	= 'Це максимальний рівень запасів на eBay (0 = немає межі резерву)';
 
 // Error
-$_['error_ended'] 		= 'Зв\'язаний перелік закінчився, Ви не зможете редагувати його. Ви повинні видалити посилання.';
+$_['error_ended'] 		= 'Зв’язаний перелік закінчився, Ви не зможете редагувати його. Ви повинні видалити посилання.';
 $_['error_reserve'] 		= 'Ви не можете встановити резерв більше, ніж у локальному магазині';
 $_['error_no_sku'] 		= 'SKU не знайдений!';
 $_['error_no_item_id'] 		= 'Item ID is missing from the request';

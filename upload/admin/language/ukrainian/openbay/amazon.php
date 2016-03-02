@@ -12,4 +12,4 @@ $_['text_heading_register'] 		= 'Зареєструватися';
 $_['text_heading_bulk_listing'] 	= 'Основний перелік';
 $_['text_heading_stock_updates'] 	= 'Оновлення магазина';
 $_['text_heading_saved_listings'] 	= 'Збережені переліки';
-$_['text_heading_bulk_linking'] 	= 'Основна зв\'язок';
+$_['text_heading_bulk_linking'] 	= 'Основна зв’язок';

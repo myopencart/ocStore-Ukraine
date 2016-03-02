@@ -1,6 +1,6 @@
 <?php
 // Text
-$_['text_title']			= 'Кредитна / Дебетова картка (BluePay)';
+$_['text_title']			= 'Кредитна / Розрахункова картка (BluePay)';
 $_['text_credit_card']			= 'Дані картки';
 $_['text_description']			= 'Товарів у %s замовлення №:%s';
 $_['text_card_type']			= 'Тип картки:';

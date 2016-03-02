@@ -32,7 +32,7 @@ $_['text_confirm_release'] 	= 'Ви впевнені, що хочете пров
 $_['text_confirm_rebate'] 	= 'Are you sure you want to rebate the payment?';
 
 // Entry
-$_['entry_account_name'] 	= 'Ім\'я облікового запису';
+$_['entry_account_name'] 	= 'Ім’я облікового запису';
 $_['entry_account_id'] 		= 'Ідентифікатор облікового запису';
 $_['entry_secret_key'] 		= "Секретний ключ";
 $_['entry_test'] 		= 'Тестовий режим';
@@ -60,6 +60,6 @@ $_['button_void'] 		= 'Void';
 
 // Error
 $_['error_permission'] 		= 'Warning: You do not have permission to modify payment BluePay!';
-$_['error_account_name'] 	= 'Необхідно вказати ім\'я облікового запису!';
+$_['error_account_name'] 	= 'Необхідно вказати ім’я облікового запису!';
 $_['error_account_id'] 		= 'Account ID Required!';
 $_['error_secret_key'] 		= 'Secret Key Required!';

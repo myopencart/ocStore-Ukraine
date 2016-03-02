@@ -15,7 +15,7 @@ $_['text_success']              = 'Облікові дані Партнера у
 // Entry
 $_['entry_tax']                 = 'Податковий код:';
 $_['entry_payment']             = 'Спосіб оплати:';
-$_['entry_cheque']              = 'Чек, ім\'я отримувача платежу:';
+$_['entry_cheque']              = 'Чек, ім’я отримувача платежу:';
 $_['entry_paypal']              = 'PayPal Email аккаунт:';
 $_['entry_bank_name']           = 'Назва банку:';
 $_['entry_bank_branch_number']  = 'ABA/BSB номер (номер відділення):';

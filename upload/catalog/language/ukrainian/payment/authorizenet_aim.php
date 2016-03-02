@@ -1,6 +1,6 @@
 <?php
 // Text
-$_['text_title']	   = 'Кредитна / Дебетова картка (Authorize.Net)';
+$_['text_title']	   = 'Кредитна / Розрахункова картка (Authorize.Net)';
 $_['text_credit_card']     = 'Дані кредитної картки';
 
 // Entry

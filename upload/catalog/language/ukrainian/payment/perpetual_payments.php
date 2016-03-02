@@ -1,6 +1,6 @@
 <?php
 // Text
-$_['text_title']			= 'Кредитна / Дебетова картка (обробка надійна by Perpetual Payments)';
+$_['text_title']			= 'Кредитна / Розрахункова картка (обробка надійна by Perpetual Payments)';
 $_['text_credit_card']			= 'Дані кредитної картки';
 $_['text_transaction']			= 'Ідентифікатор транзакції:';
 $_['text_avs']				= 'AVS/CVV:';

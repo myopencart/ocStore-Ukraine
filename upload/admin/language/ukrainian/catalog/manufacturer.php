@@ -12,12 +12,12 @@ $_['text_percent']          	= 'Процент';
 $_['text_amount']          	= 'Фіксована сума';
 
 // Column
-$_['column_name']          	= 'Ім\'я Виробника';
+$_['column_name']          	= 'Ім’я Виробника';
 $_['column_sort_order']         = 'Порядок сортування';
 $_['column_action']          	= 'Дія';
 
 // Entry
-$_['entry_name']          	= 'Ім\'я Виробника';
+$_['entry_name']          	= 'Ім’я Виробника';
 $_['entry_store']          	= 'Магазини:';
 $_['entry_keyword']          	= 'SEO URL:';
 $_['entry_image']          	= 'Зображення:';

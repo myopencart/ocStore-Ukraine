@@ -9,7 +9,7 @@ $_['text_list']        = 'Перелік Купонів';
 $_['column_name']      = 'Назва Купона';
 $_['column_code']      = 'Код';
 $_['column_orders']    = 'Замовлень';
-$_['column_total']     = 'Загалом';
+$_['column_total']     = 'Всього';
 $_['column_action']    = 'Дія';
 
 // Entry

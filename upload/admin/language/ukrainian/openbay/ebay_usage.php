@@ -1,6 +1,6 @@
 <?PHP
 // Заголовки
-$_['HEADING_TITLE'] 	= 'Використання';
+$_['heading_title'] 	= 'Використання';
 $_['text_openbay'] 	= 'OpenBay Pro';
 $_['text_ebay'] 	= 'eBay';
 

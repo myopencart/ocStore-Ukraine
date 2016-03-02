@@ -1,6 +1,6 @@
 <?php
 // Text
-$_['text_title']			= 'Кредитна / Дебетова картка (SagePay)';
+$_['text_title']			= 'Кредитна / Розрахункова картка (SagePay)';
 $_['text_credit_card']			= 'Дані картки';
 $_['text_card_type']			= 'Тип картки:';
 $_['text_card_name']			= 'Назва картки:';

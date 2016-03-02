@@ -1,6 +1,6 @@
 <?PHP
 // Тема
-$_['HEADING_TITLE'] 	= 'Кредит Системи Klarna';
+$_['heading_title'] 	= 'Кредит Системи Klarna';
 
 // Текст
 $_['text_total'] 	= 'Загальна сума замовлення';

@@ -22,7 +22,7 @@ $_['entry_sort_order'] 	= 'Порядок сортування';
 
 // Help
 $_['help_callback'] 	= 'Будь ласка увійдіть в систему і встановіть це в <a href="https://secure.authorize.net" target="_blank" class="txtLink"> https: //secure.authorize .net </a>. ';
-$_['help_md5'] = 'Кодова функція MD5 дозволяє переконатися в надійності відповідної транзакції, отриманої від Authorize.Net. Ласка увійдіть і встановіть це на <a href="https://secure.authorize.net" target="_blank" class="txtLink"> https://secure.authorize.net </a>. (Не обов\'язково)';
+$_['help_md5'] = 'Кодова функція MD5 дозволяє переконатися в надійності відповідної транзакції, отриманої від Authorize.Net. Ласка увійдіть і встановіть це на <a href="https://secure.authorize.net" target="_blank" class="txtLink"> https://secure.authorize.net </a>. (Не обов’язково)';
 $_['help_total'] 	= 'Сума замовлення має бути вище, перш ніж цей метод оплати стане активним.';
 
 // Error

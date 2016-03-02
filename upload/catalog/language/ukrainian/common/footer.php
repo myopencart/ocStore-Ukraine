@@ -3,7 +3,7 @@
 $_['text_information']  = 'Інформація';
 $_['text_service']      = 'Служба підтримки';
 $_['text_extra']        = 'Додатково';
-$_['text_contact']      = 'Зв\'язатися з нами';
+$_['text_contact']      = 'Зв’язатися з нами';
 $_['text_return']       = 'Повернення товару';
 $_['text_sitemap']      = 'Мапа сайту';
 $_['text_manufacturer'] = 'Виробники';

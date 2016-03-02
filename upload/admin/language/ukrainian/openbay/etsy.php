@@ -1,6 +1,6 @@
 <?PHP
 // Тема
-$_['HEADING_TITLE'] 		= 'Etsy';
+$_['heading_title'] 		= 'Etsy';
 $_['text_openbay'] 		= 'OpenBay експерт ';
 $_['text_dashboard'] 		= 'Панель управління Etsy';
 

@@ -10,11 +10,11 @@ $_['text_your_details']    = 'Основні дані';
 $_['text_your_address']    = 'Ваша адреса';
 $_['text_newsletter']      = 'Підписка на новини';
 $_['text_your_password']   = 'Ваш пароль';
-$_['text_agree']           = 'Мною прочитані, і я погоджуюсь з документом <a href="%s" class="agree"> <b>%s </ b> </a>';
+$_['text_agree']           = 'Мною прочитані, і я погоджуюсь з документом <a href="%s" class="agree"> <b>%s </b> </a>';
 
 // Entry
 $_['entry_customer_group'] = 'Група покупців';
-$_['entry_firstname']      = 'Ім\'я';
+$_['entry_firstname']      = 'Ім’я';
 $_['entry_lastname']       = 'Прізвище';
 $_['entry_email']          = 'E-Mail';
 $_['entry_telephone']      = 'Телефон';
@@ -32,7 +32,7 @@ $_['entry_confirm']        = 'Підтвердити';
 
 // Error
 $_['error_exists']         = 'Цей E-Mail вже зареєстрований!';
-$_['error_firstname']      = 'Ім\'я має містити від 1 до 32 символів!';
+$_['error_firstname']      = 'Ім’я має містити від 1 до 32 символів!';
 $_['error_lastname']       = 'Прізвище має містити від 1 до 32 символів!';
 $_['error_email']          = 'E-Mail введено невірно!';
 $_['error_telephone']      = 'У номеру телефона має бути від 3 до 32 цифр!';

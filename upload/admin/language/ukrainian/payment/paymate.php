@@ -20,5 +20,5 @@ $_['help_password'] 	= 'Just use some random password. This will be used to make
 $_['help_total'] 	= 'Сума замовлення має бути вище, перш ніж цей метод оплати стане активним.';
 // Error
 $_['error_permission'] 	= 'Увага: Ви не маєте дозволу на зміну оплати Paymate!';
-$_['error_username'] 	= 'Paymate ім\'я користувача обов\'язково!';
+$_['error_username'] 	= 'Paymate ім’я користувача обов’язково!';
 $_['error_password'] 	= 'Потрібен пароль!';

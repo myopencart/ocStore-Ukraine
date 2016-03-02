@@ -12,7 +12,7 @@ $_['column_date_end']   = 'Дата закінчення';
 $_['column_name']       = 'Найменування товарів';
 $_['column_model']      = 'Модель';
 $_['column_quantity']   = 'Кільість';
-$_['column_total']      = 'Загалом';
+$_['column_total']      = 'Всього';
 
 // Entry
 $_['entry_date_start']  = 'Дата почтаку:';

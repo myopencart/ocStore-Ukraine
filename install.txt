@@ -1,28 +1,28 @@
 /////////////////////////////////
-/// ocStore V2.1.x ///
+/// ocStore V2.3.x ///
 /// Інструкція зі встановлення ///
 /// http://ocstore.com.ua ///
 /// http://myopencart.com ///
 /////////////////////////////////
 
 
-ПРИМІТКА: ТІЛЬКИ ДЛЯ НОВОЇ УСТАНОВКИ!
-ЯКЩО ОНОВЛЕННЯ В ІСНУЮЧИЙ МАГАЗИН, НЕ ЗАБУДЬТЕ ПРОЧИТАТИ UPGRADE.TXT
+ПРИМЕЧАНИЕ: ТОЛЬКО ДЛЯ НОВОЙ УСТАНОВКИ!
+ЕСЛИ ОБНОВЛЕНИЕ В СУЩЕСТВУЮЩИЙ МАГАЗИН, НЕ ЗАБУДЬТЕ ПРОЧИТАТЬ UPGRADE.TXT
 
 
 -------
 Установка
 -------
-Ці інструкції призначені для ручної установки з використанням FTP, Cpanel або іншої хостинг панелі керування.
+These instructions are for a manual installation using FTP, cPanel or other web hosting Control Panel.
 
 - Установка на Linux -
 
-1. Завантажте всі ваші файли і папки на ваш сервер з папки «Upload». Можна розархівувати в будь-яке місце на Ваш вибір.
-   Наприклад: У cPanel повинно бути в папці public_html/ і в Plesk повинно бути в httpdocs/.
+1. Загрузите все ваши файлы и папки на ваш сервер из папки «Upload». Можно разархивировать в любое место на Ваш выбор.
+   Например: В cPanel должно быть в папке public_html/ и в Plesk должно быть в httpdocs/.
 
-2. Перейменуйте config-dist.php в config.php і admin/config-dist.php в admin/config.php
+2. Переименуйте config-dist.php в config.php и admin/config-dist.php в admin/config.php
 
-3. Для Linux/Unix переконайтеся, що папки та файли доступні для запису.
+3. Для Linux/Unix убедитесь, что папки и файлы доступны для записи.
 
 chmod 0755 або 0777 system/cache/
 chmod 0755 або 0777 system/logs/
@@ -34,25 +34,25 @@ chmod 0755 або 0777 image/catalog/
 chmod 0755 або 0777 config.php
 chmod 0755 або 0777 admin/config.php
 
-Якщо при правах +0755 не працює, спробуйте 0777.
+		Если при правах 0755 не работает, попробуйте 0777.
 
-4. Переконайтеся, що у Вас встановлена ​​база даних MySQL і Ви маєте до неї доступ. НІ В ЯКОМУ РАЗІ НЕ ВИКОРИСТОВУВАТИ ROOT логін і пароль.
+4. Убедитесь, что у Вас установлена база данных MySQL и Вы имеете к ней доступ. НИ В КОЕМ СЛУЧАЕ НЕ ИСПОЛЬЗУЙТЕ ROOT ЛОГИН И ПАРОЛЬ.
 
-5. Відвідайте домашню сторінку Вашого магазину.
-   Наприклад: http://www.example.com або http://www.examle.com/store/
+5. Посетите домашнюю страницу Вашего магазина.
+   Например: http://www.example.com или http://www.examle.com/store/
 
-6. Дотримуйтеся вказівок на екрані.
+6. Следуйте инструкциям на экране.
 
-7. Видаліть директорію install.
+7. Удалите установочную директорию.
 
 
 - Установка на Windows -
 
-1. Завантажте всі ваші файли і папки на ваш сервер з папки «Upload». Можна розархівувати в будь-яке місце на Ваш вибір. Напріммер /wwwroot/store або /wwwroot
+1. Загрузите все ваши файлы и папки на ваш сервер из папки «Upload». Можно разархивировать в любое место на Ваш выбор. Наприммер /wwwroot/store или /wwwroot
 
-2. Перейменуйте config-dist.php в config.php і admin/config-dist.php в admin/config.php
+2. Переименуйте config-dist.php в config.php и admin/config-dist.php в admin/config.php
 
-3. Для Windows переконайтеся, що папки та файли доступні для запису
+3. Для Windows убедитесь, что папки и файлы доступны для записи
 
 system/cache/
 system/logs/
@@ -64,21 +64,31 @@ image/catalog/
 config.php
 admin/config.php
 
-4. Переконайтеся, що у Вас встановлена ​​база даних MySQL і Ви маєте до неї доступ. НІ В ЯКОМУ РАЗІ НЕ ВИКОРИСТОВУВАТИ ROOT логін і пароль.
+4. Убедитесь, что у Вас установлена база данных MySQL и Вы имеете к ней доступ. НИ В КОЕМ СЛУЧАЕ НЕ ИСПОЛЬЗУЙТЕ ROOT ЛОГИН И ПАРОЛЬ.
 
-5. Відвідайте домашню сторінку Вашого магазину.
-   Наприклад: http://www.example.com або http://www.examle.com/store/
+5. Посетите домашнюю страницу Вашего магазина.
+   Например: http://www.example.com или http://www.examle.com/store/
 
-6. Дотримуйтеся вказівок на екрані.
+6. Следуйте инструкциям на экране.
 
-7. Видаліть директорію install.
+7. Удалите установочную директорию.
 
-- Локальна установка -
+- Локальная установка -
 
-Є багато веб-серверів для локальної установки, і більшість з них повинні працювати з ocStore з коробки. Наприклад...
+Есть много веб-серверов для локальной установки, и большинство из них должны работать с ocStore из коробки. Например...
 
 http://www.apachefriends.org/en/xampp.html
 http://www.ampps.com/
 http://www.usbwebserver.net
 http://www.wampserver.com/
 http://www.denwer.ru/
+
+----------------------------
+COMPOSER OR NOT TO COMPOSER
+----------------------------
+From version 2.2 composer has been added to aid developers who want to use composer libraries. 2 versions of OpenCart
+will become available, one compiled and one non-compiled (composer.json only - no files in vendor folder).
+
+We STRONGLY advise leaving the vendor folder outside of the webroot - so files cannot be accessed directly.
+
+Composer installing is extremely simple - https://getcomposer.org

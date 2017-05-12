@@ -7,6 +7,7 @@
 -- --------------------------------------------------------
 
 SET sql_mode = '';
+
 --
 -- Table structure for table `oc_address`
 --
@@ -79,13 +80,13 @@ CREATE TABLE `oc_affiliate` (
 
 DROP TABLE IF EXISTS `oc_affiliate_activity`;
 CREATE TABLE `oc_affiliate_activity` (
-  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
+  `affiliate_activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `affiliate_id` int(11) NOT NULL,
   `key` varchar(64) NOT NULL,
   `data` text NOT NULL,
   `ip` varchar(40) NOT NULL,
   `date_added` datetime NOT NULL,
-  PRIMARY KEY (`activity_id`)
+  PRIMARY KEY (`affiliate_activity_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -234,7 +235,18 @@ INSERT INTO `oc_attribute_description` (`attribute_id`, `language_id`, `name`) V
 (9, 1, 'test 6'),
 (10, 1, 'test 7'),
 (11, 1, 'test 8'),
-(3, 1, 'Clockspeed');
+(3, 1, 'Clockspeed'),
+(1, 2, 'Description'),
+(2, 2, 'No. of Cores'),
+(4, 2, 'test 1'),
+(5, 2, 'test 2'),
+(6, 2, 'test 3'),
+(7, 2, 'test 4'),
+(8, 2, 'test 5'),
+(9, 2, 'test 6'),
+(10, 2, 'test 7'),
+(11, 2, 'test 8'),
+(3, 2, 'Clockspeed');
 
 -- --------------------------------------------------------
 
@@ -324,6 +336,8 @@ DROP TABLE IF EXISTS `oc_banner_image`;
 CREATE TABLE `oc_banner_image` (
   `banner_image_id` int(11) NOT NULL AUTO_INCREMENT,
   `banner_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `title` varchar(64) NOT NULL,
   `link` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `sort_order` int(3) NOT NULL DEFAULT '0',
@@ -421,7 +435,8 @@ INSERT INTO `oc_banner_image_description` (`banner_image_id`, `language_id`, `ba
 
 DROP TABLE IF EXISTS `oc_cart`;
 CREATE TABLE `oc_cart` (
-  `cart_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cart_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `api_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `session_id` varchar(32) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -430,7 +445,7 @@ CREATE TABLE `oc_cart` (
   `quantity` int(5) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`cart_id`),
-  KEY `cart_id` (`customer_id`,`session_id`,`product_id`,`recurring_id`)
+  KEY `cart_id` (`api_id`,`customer_id`,`session_id`,`product_id`,`recurring_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -1102,7 +1117,7 @@ DROP TABLE IF EXISTS `oc_coupon`;
 CREATE TABLE `oc_coupon` (
   `coupon_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
-  `code` varchar(10) NOT NULL,
+  `code` varchar(20) NOT NULL,
   `type` char(1) NOT NULL,
   `discount` decimal(15,4) NOT NULL,
   `logged` tinyint(1) NOT NULL,
@@ -1210,6 +1225,7 @@ CREATE TABLE `oc_customer` (
   `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_group_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL DEFAULT '0',
+  `language_id` int(11) NOT NULL,
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
   `email` varchar(96) NOT NULL,
@@ -1227,6 +1243,7 @@ CREATE TABLE `oc_customer` (
   `approved` tinyint(1) NOT NULL,
   `safe` tinyint(1) NOT NULL,
   `token` text NOT NULL,
+  `code` varchar(40) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`customer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -1239,13 +1256,13 @@ CREATE TABLE `oc_customer` (
 
 DROP TABLE IF EXISTS `oc_customer_activity`;
 CREATE TABLE `oc_customer_activity` (
-  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `key` varchar(64) NOT NULL,
   `data` text NOT NULL,
   `ip` varchar(40) NOT NULL,
   `date_added` datetime NOT NULL,
-  PRIMARY KEY (`activity_id`)
+  PRIMARY KEY (`customer_activity_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -1289,7 +1306,8 @@ CREATE TABLE `oc_customer_group_description` (
 --
 
 INSERT INTO `oc_customer_group_description` (`customer_group_id`, `language_id`, `name`, `description`) VALUES
-(1, 1, 'Default', 'test');
+(1, 1, 'Default', 'test'),
+(1, 2, 'Default', 'test');
 
 -- --------------------------------------------------------
 
@@ -1394,6 +1412,28 @@ CREATE TABLE `oc_customer_transaction` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `oc_customer_search`
+--
+
+DROP TABLE IF EXISTS `oc_customer_search`;
+CREATE TABLE `oc_customer_search` (
+  `customer_search_id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `keyword` varchar(255) NOT NULL,
+  `category_id` int(11),
+  `sub_category` tinyint(1) NOT NULL,
+  `description` tinyint(1) NOT NULL,
+  `products` int(11) NOT NULL,
+  `ip` varchar(40) NOT NULL,
+  `date_added` datetime NOT NULL,
+  PRIMARY KEY (`customer_search_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `oc_customer_wishlist`
 --
 
@@ -1416,6 +1456,7 @@ CREATE TABLE `oc_custom_field` (
   `custom_field_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) NOT NULL,
   `value` text NOT NULL,
+  `validation` varchar(255) NOT NULL,
   `location` varchar(7) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `sort_order` int(3) NOT NULL,
@@ -1488,7 +1529,7 @@ CREATE TABLE `oc_custom_field_value_description` (
 DROP TABLE IF EXISTS `oc_download`;
 CREATE TABLE `oc_download` (
   `download_id` int(11) NOT NULL AUTO_INCREMENT,
-  `filename` varchar(128) NOT NULL,
+  `filename` varchar(160) NOT NULL,
   `mask` varchar(128) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`download_id`)
@@ -1520,6 +1561,8 @@ CREATE TABLE `oc_event` (
   `code` varchar(32) NOT NULL,
   `trigger` text NOT NULL,
   `action` text NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `date_added` datetime NOT NULL,
   PRIMARY KEY (`event_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -1528,7 +1571,7 @@ CREATE TABLE `oc_event` (
 --
 
 INSERT INTO `oc_event` (`event_id`, `code`, `trigger`, `action`) VALUES
-(1, 'voucher', 'post.order.history.add', 'total/voucher/send');
+(1, 'voucher', 'catalog/model/checkout/order/addOrderHistory/after', 'extension/total/voucher/send');
 
 -- --------------------------------------------------------
 
@@ -1567,7 +1610,16 @@ INSERT INTO `oc_extension` (`extension_id`, `type`, `code`) VALUES
 (16, 'total', 'voucher'),
 (17, 'payment', 'free_checkout'),
 (18, 'module', 'featured'),
-(19, 'module', 'slideshow');
+(19, 'module', 'slideshow'),
+(20, 'theme', 'theme_default'),
+(21, 'dashboard', 'activity'),
+(22, 'dashboard', 'sale'),
+(23, 'dashboard', 'recent'),
+(24, 'dashboard', 'order'),
+(25, 'dashboard', 'online'),
+(26, 'dashboard', 'map'),
+(27, 'dashboard', 'customer'),
+(28, 'dashboard', 'chart');
 
 -- --------------------------------------------------------
 
@@ -1851,7 +1903,7 @@ CREATE TABLE `oc_layout_route` (
   `layout_route_id` int(11) NOT NULL AUTO_INCREMENT,
   `layout_id` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
-  `route` varchar(255) NOT NULL,
+  `route` varchar(64) NOT NULL,
   PRIMARY KEY (`layout_route_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -1894,7 +1946,7 @@ CREATE TABLE `oc_length_class` (
 INSERT INTO `oc_length_class` (`length_class_id`, `value`) VALUES
 (1, '1.00'),
 (2, '10.00'),
-(3, '0.39370000');
+(3, '0.39');
 
 -- --------------------------------------------------------
 
@@ -1904,7 +1956,7 @@ INSERT INTO `oc_length_class` (`length_class_id`, `value`) VALUES
 
 DROP TABLE IF EXISTS `oc_length_class_description`;
 CREATE TABLE `oc_length_class_description` (
-  `length_class_id` int(11) NOT NULL AUTO_INCREMENT,
+  `length_class_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
   `title` varchar(32) NOT NULL,
   `unit` varchar(4) NOT NULL,
@@ -1981,6 +2033,7 @@ DROP TABLE IF EXISTS `oc_manufacturer_description`;
 CREATE TABLE `oc_manufacturer_description` (
   `manufacturer_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
   `description` text NOT NULL,
   `meta_title` varchar(255) NOT NULL,
   `meta_h1` varchar(255) NOT NULL,
@@ -2055,6 +2108,51 @@ CREATE TABLE `oc_marketing` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `oc_menu`
+--
+
+DROP TABLE IF EXISTS `oc_menu`;
+CREATE TABLE `oc_menu` (
+  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `type` varchar(6) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `sort_order` int(3) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`menu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oc_menu_description`
+--
+
+DROP TABLE IF EXISTS `oc_menu_description`;
+CREATE TABLE `oc_menu_description` (
+  `menu_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  PRIMARY KEY (`menu_id`, `language_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oc_menu_module`
+--
+
+DROP TABLE IF EXISTS `oc_menu_module`;
+CREATE TABLE `oc_menu_module` (
+  `menu_module_id` int(11) NOT NULL,
+  `menu_id` int(11) NOT NULL,
+  `code` varchar(64) NOT NULL,
+  `sort_order` int(3) NOT NULL,
+  PRIMARY KEY (`menu_module_id`),
+  KEY `menu_id` (`menu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
 -- Table structure for table `oc_modification`
 --
 
@@ -2066,7 +2164,7 @@ CREATE TABLE `oc_modification` (
   `author` varchar(64) NOT NULL,
   `version` varchar(32) NOT NULL,
   `link` varchar(255) NOT NULL,
-  `xml` text NOT NULL,
+  `xml` mediumtext NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`modification_id`)
@@ -2303,7 +2401,7 @@ CREATE TABLE `oc_order` (
   `custom_field` text NOT NULL,
   `payment_firstname` varchar(32) NOT NULL,
   `payment_lastname` varchar(32) NOT NULL,
-  `payment_company` varchar(40) NOT NULL,
+  `payment_company` varchar(60) NOT NULL,
   `payment_address_1` varchar(128) NOT NULL,
   `payment_address_2` varchar(128) NOT NULL,
   `payment_city` varchar(128) NOT NULL,
@@ -2384,7 +2482,8 @@ CREATE TABLE `oc_order_history` (
   `notify` tinyint(1) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
   `date_added` datetime NOT NULL,
-  PRIMARY KEY (`order_history_id`)
+  PRIMARY KEY (`order_history_id`),
+  KEY `order_id` (`order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -3081,37 +3180,37 @@ CREATE TABLE `oc_product_to_category` (
 -- Dumping data for table `oc_product_to_category`
 --
 
-INSERT INTO `oc_product_to_category` (`product_id`, `category_id`) VALUES
-(28, 20),
-(28, 24),
-(29, 20),
-(29, 24),
-(30, 20),
-(30, 33),
-(31, 33),
-(32, 34),
-(33, 20),
-(33, 28),
-(34, 34),
-(35, 20),
-(36, 34),
-(40, 20),
-(40, 24),
-(41, 27),
-(42, 20),
-(42, 28),
-(43, 18),
-(43, 20),
-(44, 18),
-(44, 20),
-(45, 18),
-(46, 18),
-(46, 20),
-(47, 18),
-(47, 20),
-(48, 20),
-(48, 34),
-(49, 57);
+INSERT INTO `oc_product_to_category` (`product_id`, `category_id`, `main_category`) VALUES
+(28, 20, 1),
+(28, 24, 0),
+(29, 20, 1),
+(29, 24, 0),
+(30, 20, 1),
+(30, 33, 0),
+(31, 33, 1),
+(32, 34, 1),
+(33, 20, 1),
+(33, 28, 0),
+(34, 34, 1),
+(35, 20, 1),
+(36, 34, 1),
+(40, 20, 1),
+(40, 24, 0),
+(41, 27, 1),
+(42, 20, 1),
+(42, 28, 0),
+(43, 18, 1),
+(43, 20, 0),
+(44, 18, 1),
+(44, 20, 0),
+(45, 18, 1),
+(46, 18, 1),
+(46, 20, 0),
+(47, 18, 1),
+(47, 20, 0),
+(48, 20, 1),
+(48, 34, 0),
+(49, 57, 1);
 
 -- --------------------------------------------------------
 
@@ -3333,7 +3432,7 @@ DROP TABLE IF EXISTS `oc_return_status`;
 CREATE TABLE `oc_return_status` (
   `return_status_id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(32) NOT NULL,
+  `name` varchar(128) NOT NULL,
   PRIMARY KEY (`return_status_id`,`language_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -3394,157 +3493,184 @@ CREATE TABLE `oc_setting` (
 -- Dumping data for table `oc_setting`
 --
 
-INSERT INTO `oc_setting` (`setting_id`, `store_id`, `code`, `key`, `value`, `serialized`) VALUES
-(1, 0, 'shipping', 'shipping_sort_order', '3', 0),
-(2, 0, 'sub_total', 'sub_total_sort_order', '1', 0),
-(3, 0, 'sub_total', 'sub_total_status', '1', 0),
-(4, 0, 'tax', 'tax_status', '1', 0),
-(5, 0, 'total', 'total_sort_order', '9', 0),
-(6, 0, 'total', 'total_status', '1', 0),
-(7, 0, 'tax', 'tax_sort_order', '5', 0),
-(8, 0, 'free_checkout', 'free_checkout_sort_order', '1', 0),
-(9, 0, 'cod', 'cod_sort_order', '5', 0),
-(10, 0, 'cod', 'cod_total', '0.01', 0),
-(11, 0, 'cod', 'cod_order_status_id', '1', 0),
-(12, 0, 'cod', 'cod_geo_zone_id', '0', 0),
-(13, 0, 'cod', 'cod_status', '1', 0),
-(14, 0, 'shipping', 'shipping_status', '1', 0),
-(15, 0, 'shipping', 'shipping_estimator', '1', 0),
-(27, 0, 'coupon', 'coupon_sort_order', '4', 0),
-(28, 0, 'coupon', 'coupon_status', '1', 0),
-(34, 0, 'flat', 'flat_sort_order', '1', 0),
-(35, 0, 'flat', 'flat_status', '1', 0),
-(36, 0, 'flat', 'flat_geo_zone_id', '0', 0),
-(37, 0, 'flat', 'flat_tax_class_id', '9', 0),
-(41, 0, 'flat', 'flat_cost', '5.00', 0),
-(42, 0, 'credit', 'credit_sort_order', '7', 0),
-(43, 0, 'credit', 'credit_status', '1', 0),
-(53, 0, 'reward', 'reward_sort_order', '2', 0),
-(54, 0, 'reward', 'reward_status', '1', 0),
-(146, 0, 'category', 'category_status', '1', 0),
-(158, 0, 'account', 'account_status', '1', 0),
-(159, 0, 'affiliate', 'affiliate_status', '1', 0),
-(267, 0, 'config', 'config_robots', 'abot\r\ndbot\r\nebot\r\nhbot\r\nkbot\r\nlbot\r\nmbot\r\nnbot\r\nobot\r\npbot\r\nrbot\r\nsbot\r\ntbot\r\nvbot\r\nybot\r\nzbot\r\nbot.\r\nbot/\r\n_bot\r\n.bot\r\n/bot\r\n-bot\r\n:bot\r\n(bot\r\ncrawl\r\nslurp\r\nspider\r\nseek\r\naccoona\r\nacoon\r\nadressendeutschland\r\nah-ha.com\r\nahoy\r\naltavista\r\nananzi\r\nanthill\r\nappie\r\narachnophilia\r\narale\r\naraneo\r\naranha\r\narchitext\r\naretha\r\narks\r\nasterias\r\natlocal\r\natn\r\natomz\r\naugurfind\r\nbackrub\r\nbannana_bot\r\nbaypup\r\nbdfetch\r\nbig brother\r\nbiglotron\r\nbjaaland\r\nblackwidow\r\nblaiz\r\nblog\r\nblo.\r\nbloodhound\r\nboitho\r\nbooch\r\nbradley\r\nbutterfly\r\ncalif\r\ncassandra\r\nccubee\r\ncfetch\r\ncharlotte\r\nchurl\r\ncienciaficcion\r\ncmc\r\ncollective\r\ncomagent\r\ncombine\r\ncomputingsite\r\ncsci\r\ncurl\r\ncusco\r\ndaumoa\r\ndeepindex\r\ndelorie\r\ndepspid\r\ndeweb\r\ndie blinde kuh\r\ndigger\r\nditto\r\ndmoz\r\ndocomo\r\ndownload express\r\ndtaagent\r\ndwcp\r\nebiness\r\nebingbong\r\ne-collector\r\nejupiter\r\nemacs-w3 search engine\r\nesther\r\nevliya celebi\r\nezresult\r\nfalcon\r\nfelix ide\r\nferret\r\nfetchrover\r\nfido\r\nfindlinks\r\nfireball\r\nfish search\r\nfouineur\r\nfunnelweb\r\ngazz\r\ngcreep\r\ngenieknows\r\ngetterroboplus\r\ngeturl\r\nglx\r\ngoforit\r\ngolem\r\ngrabber\r\ngrapnel\r\ngralon\r\ngriffon\r\ngromit\r\ngrub\r\ngulliver\r\nhamahakki\r\nharvest\r\nhavindex\r\nhelix\r\nheritrix\r\nhku www octopus\r\nhomerweb\r\nhtdig\r\nhtml index\r\nhtml_analyzer\r\nhtmlgobble\r\nhubater\r\nhyper-decontextualizer\r\nia_archiver\r\nibm_planetwide\r\nichiro\r\niconsurf\r\niltrovatore\r\nimage.kapsi.net\r\nimagelock\r\nincywincy\r\nindexer\r\ninfobee\r\ninformant\r\ningrid\r\ninktomisearch.com\r\ninspector web\r\nintelliagent\r\ninternet shinchakubin\r\nip3000\r\niron33\r\nisraeli-search\r\nivia\r\njack\r\njakarta\r\njavabee\r\njetbot\r\njumpstation\r\nkatipo\r\nkdd-explorer\r\nkilroy\r\nknowledge\r\nkototoi\r\nkretrieve\r\nlabelgrabber\r\nlachesis\r\nlarbin\r\nlegs\r\nlibwww\r\nlinkalarm\r\nlink validator\r\nlinkscan\r\nlockon\r\nlwp\r\nlycos\r\nmagpie\r\nmantraagent\r\nmapoftheinternet\r\nmarvin/\r\nmattie\r\nmediafox\r\nmediapartners\r\nmercator\r\nmerzscope\r\nmicrosoft url control\r\nminirank\r\nmiva\r\nmj12\r\nmnogosearch\r\nmoget\r\nmonster\r\nmoose\r\nmotor\r\nmultitext\r\nmuncher\r\nmuscatferret\r\nmwd.search\r\nmyweb\r\nnajdi\r\nnameprotect\r\nnationaldirectory\r\nnazilla\r\nncsa beta\r\nnec-meshexplorer\r\nnederland.zoek\r\nnetcarta webmap engine\r\nnetmechanic\r\nnetresearchserver\r\nnetscoop\r\nnewscan-online\r\nnhse\r\nnokia6682/\r\nnomad\r\nnoyona\r\nnutch\r\nnzexplorer\r\nobjectssearch\r\noccam\r\nomni\r\nopen text\r\nopenfind\r\nopenintelligencedata\r\norb search\r\nosis-project\r\npack rat\r\npageboy\r\npagebull\r\npage_verifier\r\npanscient\r\nparasite\r\npartnersite\r\npatric\r\npear.\r\npegasus\r\nperegrinator\r\npgp key agent\r\nphantom\r\nphpdig\r\npicosearch\r\npiltdownman\r\npimptrain\r\npinpoint\r\npioneer\r\npiranha\r\nplumtreewebaccessor\r\npogodak\r\npoirot\r\npompos\r\npoppelsdorf\r\npoppi\r\npopular iconoclast\r\npsycheclone\r\npublisher\r\npython\r\nrambler\r\nraven search\r\nroach\r\nroad runner\r\nroadhouse\r\nrobbie\r\nrobofox\r\nrobozilla\r\nrules\r\nsalty\r\nsbider\r\nscooter\r\nscoutjet\r\nscrubby\r\nsearch.\r\nsearchprocess\r\nsemanticdiscovery\r\nsenrigan\r\nsg-scout\r\nshai''hulud\r\nshark\r\nshopwiki\r\nsidewinder\r\nsift\r\nsilk\r\nsimmany\r\nsite searcher\r\nsite valet\r\nsitetech-rover\r\nskymob.com\r\nsleek\r\nsmartwit\r\nsna-\r\nsnappy\r\nsnooper\r\nsohu\r\nspeedfind\r\nsphere\r\nsphider\r\nspinner\r\nspyder\r\nsteeler/\r\nsuke\r\nsuntek\r\nsupersnooper\r\nsurfnomore\r\nsven\r\nsygol\r\nszukacz\r\ntach black widow\r\ntarantula\r\ntempleton\r\n/teoma\r\nt-h-u-n-d-e-r-s-t-o-n-e\r\ntheophrastus\r\ntitan\r\ntitin\r\ntkwww\r\ntoutatis\r\nt-rex\r\ntutorgig\r\ntwiceler\r\ntwisted\r\nucsd\r\nudmsearch\r\nurl check\r\nupdated\r\nvagabondo\r\nvalkyrie\r\nverticrawl\r\nvictoria\r\nvision-search\r\nvolcano\r\nvoyager/\r\nvoyager-hc\r\nw3c_validator\r\nw3m2\r\nw3mir\r\nwalker\r\nwallpaper\r\nwanderer\r\nwauuu\r\nwavefire\r\nweb core\r\nweb hopper\r\nweb wombat\r\nwebbandit\r\nwebcatcher\r\nwebcopy\r\nwebfoot\r\nweblayers\r\nweblinker\r\nweblog monitor\r\nwebmirror\r\nwebmonkey\r\nwebquest\r\nwebreaper\r\nwebsitepulse\r\nwebsnarf\r\nwebstolperer\r\nwebvac\r\nwebwalk\r\nwebwatch\r\nwebwombat\r\nwebzinger\r\nwhizbang\r\nwhowhere\r\nwild ferret\r\nworldlight\r\nwwwc\r\nwwwster\r\nxenu\r\nxget\r\nxift\r\nxirq\r\nyandex\r\nyanga\r\nyeti\r\nyodao\r\nzao\r\nzippp\r\nzyborg', 0),
-(266, 0, 'config', 'config_shared', '0', 0),
-(265, 0, 'config', 'config_secure', '0', 0),
-(94, 0, 'voucher', 'voucher_sort_order', '8', 0),
-(95, 0, 'voucher', 'voucher_status', '1', 0),
-(261, 0, 'config', 'config_fraud_detection', '0', 0),
-(260, 0, 'config', 'config_mail_alert', '', 0),
-(103, 0, 'free_checkout', 'free_checkout_status', '1', 0),
-(104, 0, 'free_checkout', 'free_checkout_order_status_id', '1', 0),
-(258, 0, 'config', 'config_ftp_status', '0', 0),
-(257, 0, 'config', 'config_ftp_root', '', 0),
-(256, 0, 'config', 'config_ftp_password', '', 0),
-(255, 0, 'config', 'config_ftp_username', '', 0),
-(254, 0, 'config', 'config_ftp_port', '21', 0),
-(253, 0, 'config', 'config_ftp_hostname', '', 0),
-(252, 0, 'config', 'config_image_location_height', '50', 0),
-(251, 0, 'config', 'config_image_location_width', '268', 0),
-(250, 0, 'config', 'config_image_cart_height', '47', 0),
-(249, 0, 'config', 'config_image_cart_width', '47', 0),
-(248, 0, 'config', 'config_image_wishlist_height', '47', 0),
-(181, 0, 'config', 'config_meta_title', 'Мій магазин', 0),
-(182, 0, 'config', 'config_meta_description', 'Мій магазин', 0),
-(183, 0, 'config', 'config_meta_keyword', '', 0),
-(184, 0, 'config', 'config_template', 'default', 0),
-(185, 0, 'config', 'config_layout_id', '4', 0),
-(186, 0, 'config', 'config_country_id', '220', 0),
-(187, 0, 'config', 'config_zone_id', '3491', 0),
-(188, 0, 'config', 'config_language', 'uk', 0),
-(189, 0, 'config', 'config_admin_language', 'uk', 0),
-(190, 0, 'config', 'config_currency', 'UAH', 0),
-(191, 0, 'config', 'config_currency_auto', '1', 0),
-(192, 0, 'config', 'config_length_class_id', '1', 0),
-(193, 0, 'config', 'config_weight_class_id', '1', 0),
-(194, 0, 'config', 'config_product_count', '1', 0),
-(195, 0, 'config', 'config_product_limit', '15', 0),
-(196, 0, 'config', 'config_product_description_length', '100', 0),
-(197, 0, 'config', 'config_limit_admin', '20', 0),
-(198, 0, 'config', 'config_review_status', '1', 0),
-(199, 0, 'config', 'config_review_guest', '1', 0),
-(200, 0, 'config', 'config_review_mail', '0', 0),
-(201, 0, 'config', 'config_voucher_min', '1', 0),
-(202, 0, 'config', 'config_voucher_max', '1000', 0),
-(203, 0, 'config', 'config_tax', '1', 0),
-(204, 0, 'config', 'config_tax_default', 'shipping', 0),
-(205, 0, 'config', 'config_tax_customer', 'shipping', 0),
-(206, 0, 'config', 'config_customer_online', '0', 0),
-(207, 0, 'config', 'config_customer_group_id', '1', 0),
-(208, 0, 'config', 'config_customer_group_display', '["1"]', 1),
-(209, 0, 'config', 'config_customer_price', '0', 0),
-(210, 0, 'config', 'config_account_id', '3', 0),
-(211, 0, 'config', 'config_account_mail', '0', 0),
-(212, 0, 'config', 'config_invoice_prefix', 'INV-2016-00', 0),
-(213, 0, 'config', 'config_api_id', '1', 0),
-(214, 0, 'config', 'config_cart_weight', '1', 0),
-(215, 0, 'config', 'config_checkout_guest', '1', 0),
-(216, 0, 'config', 'config_checkout_id', '5', 0),
-(217, 0, 'config', 'config_order_status_id', '1', 0),
-(218, 0, 'config', 'config_processing_status', '["5","1","2","12","3"]', 1),
-(219, 0, 'config', 'config_complete_status', '["5","3"]', 1),
-(220, 0, 'config', 'config_order_mail', '0', 0),
-(221, 0, 'config', 'config_stock_display', '0', 0),
-(222, 0, 'config', 'config_stock_warning', '0', 0),
-(223, 0, 'config', 'config_stock_checkout', '0', 0),
-(224, 0, 'config', 'config_affiliate_approval', '0', 0),
-(225, 0, 'config', 'config_affiliate_auto', '0', 0),
-(226, 0, 'config', 'config_affiliate_commission', '5', 0),
-(227, 0, 'config', 'config_affiliate_id', '4', 0),
-(228, 0, 'config', 'config_affiliate_mail', '0', 0),
-(229, 0, 'config', 'config_return_id', '0', 0),
-(230, 0, 'config', 'config_return_status_id', '2', 0),
-(231, 0, 'config', 'config_logo', 'catalog/logo.png', 0),
-(232, 0, 'config', 'config_icon', 'catalog/cart.png', 0),
-(233, 0, 'config', 'config_image_category_width', '80', 0),
-(234, 0, 'config', 'config_image_category_height', '80', 0),
-(235, 0, 'config', 'config_image_thumb_width', '228', 0),
-(236, 0, 'config', 'config_image_thumb_height', '228', 0),
-(237, 0, 'config', 'config_image_popup_width', '500', 0),
-(238, 0, 'config', 'config_image_popup_height', '500', 0),
-(239, 0, 'config', 'config_image_product_width', '228', 0),
-(240, 0, 'config', 'config_image_product_height', '228', 0),
-(241, 0, 'config', 'config_image_additional_width', '74', 0),
-(242, 0, 'config', 'config_image_additional_height', '74', 0),
-(243, 0, 'config', 'config_image_related_width', '80', 0),
-(244, 0, 'config', 'config_image_related_height', '80', 0),
-(245, 0, 'config', 'config_image_compare_width', '90', 0),
-(246, 0, 'config', 'config_image_compare_height', '90', 0),
-(247, 0, 'config', 'config_image_wishlist_width', '47', 0),
-(180, 0, 'config', 'config_comment', '', 0),
-(179, 0, 'config', 'config_open', '', 0),
-(178, 0, 'config', 'config_image', '', 0),
-(177, 0, 'config', 'config_fax', '', 0),
-(176, 0, 'config', 'config_telephone', '123456789', 0),
-(175, 0, 'config', 'config_email', 'admin@store.ru', 0),
-(174, 0, 'config', 'config_geocode', '54.718681,20.499113', 0),
-(172, 0, 'config', 'config_owner', 'Моє Ім''я', 0),
-(173, 0, 'config', 'config_address', 'Адрес', 0),
-(171, 0, 'config', 'config_name', 'Мій магазин', 0),
-(268, 0, 'config', 'config_seo_url', '0', 0),
-(269, 0, 'config', 'config_file_max_size', '300000', 0),
-(270, 0, 'config', 'config_file_ext_allowed', 'zip\r\ntxt\r\npng\r\njpe\r\njpeg\r\njpg\r\ngif\r\nbmp\r\nico\r\ntiff\r\ntif\r\nsvg\r\nsvgz\r\nzip\r\nrar\r\nmsi\r\ncab\r\nmp3\r\nqt\r\nmov\r\npdf\r\npsd\r\nai\r\neps\r\nps\r\ndoc', 0),
-(271, 0, 'config', 'config_file_mime_allowed', 'text/plain\r\nimage/png\r\nimage/jpeg\r\nimage/gif\r\nimage/bmp\r\nimage/tiff\r\nimage/svg+xml\r\napplication/zip\r\n&quot;application/zip&quot;\r\napplication/x-zip\r\n&quot;application/x-zip&quot;\r\napplication/x-zip-compressed\r\n&quot;application/x-zip-compressed&quot;\r\napplication/rar\r\n&quot;application/rar&quot;\r\napplication/x-rar\r\n&quot;application/x-rar&quot;\r\napplication/x-rar-compressed\r\n&quot;application/x-rar-compressed&quot;\r\napplication/octet-stream\r\n&quot;application/octet-stream&quot;\r\naudio/mpeg\r\nvideo/quicktime\r\napplication/pdf', 0),
-(272, 0, 'config', 'config_maintenance', '0', 0),
-(273, 0, 'config', 'config_password', '1', 0),
-(274, 0, 'config', 'config_encryption', '87431d38e7edce36d5153707d4cd2bf9', 0),
-(275, 0, 'config', 'config_compression', '0', 0),
-(276, 0, 'config', 'config_error_display', '1', 0),
-(277, 0, 'config', 'config_error_log', '1', 0),
-(278, 0, 'config', 'config_error_filename', 'error.log', 0),
-(279, 0, 'config', 'config_google_analytics', '', 0),
-(280, 0, 'config', 'config_mail_protocol', 'mail', 0),
-(281, 0, 'config', 'config_mail_parameter', '', 0),
-(282, 0, 'config', 'config_mail_smtp_hostname', '', 0),
-(283, 0, 'config', 'config_mail_smtp_username', '', 0),
-(284, 0, 'config', 'config_mail_smtp_password', '', 0),
-(285, 0, 'config', 'config_mail_smtp_port', '25', 0),
-(286, 0, 'config', 'config_mail_smtp_timeout', '5', 0),
-(287, 0, 'config', 'config_captcha', 'basic_captcha', 0),
-(288, 0, 'config', 'config_captcha_page', '["review","return","contact"]', 1),
-(289, 0, 'config', 'config_login_attempts', '5', 0),
-(290, 0, 'config', 'config_mail_regexp', '/^[^\@]+@.*.[a-z]{2,15}$/i', 0);
-
+INSERT INTO `oc_setting` (`store_id`, `code`, `key`, `value`, `serialized`) VALUES
+(0, 'config', 'config_robots', 'abot\r\ndbot\r\nebot\r\nhbot\r\nkbot\r\nlbot\r\nmbot\r\nnbot\r\nobot\r\npbot\r\nrbot\r\nsbot\r\ntbot\r\nvbot\r\nybot\r\nzbot\r\nbot.\r\nbot/\r\n_bot\r\n.bot\r\n/bot\r\n-bot\r\n:bot\r\n(bot\r\ncrawl\r\nslurp\r\nspider\r\nseek\r\naccoona\r\nacoon\r\nadressendeutschland\r\nah-ha.com\r\nahoy\r\naltavista\r\nananzi\r\nanthill\r\nappie\r\narachnophilia\r\narale\r\naraneo\r\naranha\r\narchitext\r\naretha\r\narks\r\nasterias\r\natlocal\r\natn\r\natomz\r\naugurfind\r\nbackrub\r\nbannana_bot\r\nbaypup\r\nbdfetch\r\nbig brother\r\nbiglotron\r\nbjaaland\r\nblackwidow\r\nblaiz\r\nblog\r\nblo.\r\nbloodhound\r\nboitho\r\nbooch\r\nbradley\r\nbutterfly\r\ncalif\r\ncassandra\r\nccubee\r\ncfetch\r\ncharlotte\r\nchurl\r\ncienciaficcion\r\ncmc\r\ncollective\r\ncomagent\r\ncombine\r\ncomputingsite\r\ncsci\r\ncurl\r\ncusco\r\ndaumoa\r\ndeepindex\r\ndelorie\r\ndepspid\r\ndeweb\r\ndie blinde kuh\r\ndigger\r\nditto\r\ndmoz\r\ndocomo\r\ndownload express\r\ndtaagent\r\ndwcp\r\nebiness\r\nebingbong\r\ne-collector\r\nejupiter\r\nemacs-w3 search engine\r\nesther\r\nevliya celebi\r\nezresult\r\nfalcon\r\nfelix ide\r\nferret\r\nfetchrover\r\nfido\r\nfindlinks\r\nfireball\r\nfish search\r\nfouineur\r\nfunnelweb\r\ngazz\r\ngcreep\r\ngenieknows\r\ngetterroboplus\r\ngeturl\r\nglx\r\ngoforit\r\ngolem\r\ngrabber\r\ngrapnel\r\ngralon\r\ngriffon\r\ngromit\r\ngrub\r\ngulliver\r\nhamahakki\r\nharvest\r\nhavindex\r\nhelix\r\nheritrix\r\nhku www octopus\r\nhomerweb\r\nhtdig\r\nhtml index\r\nhtml_analyzer\r\nhtmlgobble\r\nhubater\r\nhyper-decontextualizer\r\nia_archiver\r\nibm_planetwide\r\nichiro\r\niconsurf\r\niltrovatore\r\nimage.kapsi.net\r\nimagelock\r\nincywincy\r\nindexer\r\ninfobee\r\ninformant\r\ningrid\r\ninktomisearch.com\r\ninspector web\r\nintelliagent\r\ninternet shinchakubin\r\nip3000\r\niron33\r\nisraeli-search\r\nivia\r\njack\r\njakarta\r\njavabee\r\njetbot\r\njumpstation\r\nkatipo\r\nkdd-explorer\r\nkilroy\r\nknowledge\r\nkototoi\r\nkretrieve\r\nlabelgrabber\r\nlachesis\r\nlarbin\r\nlegs\r\nlibwww\r\nlinkalarm\r\nlink validator\r\nlinkscan\r\nlockon\r\nlwp\r\nlycos\r\nmagpie\r\nmantraagent\r\nmapoftheinternet\r\nmarvin/\r\nmattie\r\nmediafox\r\nmediapartners\r\nmercator\r\nmerzscope\r\nmicrosoft url control\r\nminirank\r\nmiva\r\nmj12\r\nmnogosearch\r\nmoget\r\nmonster\r\nmoose\r\nmotor\r\nmultitext\r\nmuncher\r\nmuscatferret\r\nmwd.search\r\nmyweb\r\nnajdi\r\nnameprotect\r\nnationaldirectory\r\nnazilla\r\nncsa beta\r\nnec-meshexplorer\r\nnederland.zoek\r\nnetcarta webmap engine\r\nnetmechanic\r\nnetresearchserver\r\nnetscoop\r\nnewscan-online\r\nnhse\r\nnokia6682/\r\nnomad\r\nnoyona\r\nnutch\r\nnzexplorer\r\nobjectssearch\r\noccam\r\nomni\r\nopen text\r\nopenfind\r\nopenintelligencedata\r\norb search\r\nosis-project\r\npack rat\r\npageboy\r\npagebull\r\npage_verifier\r\npanscient\r\nparasite\r\npartnersite\r\npatric\r\npear.\r\npegasus\r\nperegrinator\r\npgp key agent\r\nphantom\r\nphpdig\r\npicosearch\r\npiltdownman\r\npimptrain\r\npinpoint\r\npioneer\r\npiranha\r\nplumtreewebaccessor\r\npogodak\r\npoirot\r\npompos\r\npoppelsdorf\r\npoppi\r\npopular iconoclast\r\npsycheclone\r\npublisher\r\npython\r\nrambler\r\nraven search\r\nroach\r\nroad runner\r\nroadhouse\r\nrobbie\r\nrobofox\r\nrobozilla\r\nrules\r\nsalty\r\nsbider\r\nscooter\r\nscoutjet\r\nscrubby\r\nsearch.\r\nsearchprocess\r\nsemanticdiscovery\r\nsenrigan\r\nsg-scout\r\nshai''hulud\r\nshark\r\nshopwiki\r\nsidewinder\r\nsift\r\nsilk\r\nsimmany\r\nsite searcher\r\nsite valet\r\nsitetech-rover\r\nskymob.com\r\nsleek\r\nsmartwit\r\nsna-\r\nsnappy\r\nsnooper\r\nsohu\r\nspeedfind\r\nsphere\r\nsphider\r\nspinner\r\nspyder\r\nsteeler/\r\nsuke\r\nsuntek\r\nsupersnooper\r\nsurfnomore\r\nsven\r\nsygol\r\nszukacz\r\ntach black widow\r\ntarantula\r\ntempleton\r\n/teoma\r\nt-h-u-n-d-e-r-s-t-o-n-e\r\ntheophrastus\r\ntitan\r\ntitin\r\ntkwww\r\ntoutatis\r\nt-rex\r\ntutorgig\r\ntwiceler\r\ntwisted\r\nucsd\r\nudmsearch\r\nurl check\r\nupdated\r\nvagabondo\r\nvalkyrie\r\nverticrawl\r\nvictoria\r\nvision-search\r\nvolcano\r\nvoyager/\r\nvoyager-hc\r\nw3c_validator\r\nw3m2\r\nw3mir\r\nwalker\r\nwallpaper\r\nwanderer\r\nwauuu\r\nwavefire\r\nweb core\r\nweb hopper\r\nweb wombat\r\nwebbandit\r\nwebcatcher\r\nwebcopy\r\nwebfoot\r\nweblayers\r\nweblinker\r\nweblog monitor\r\nwebmirror\r\nwebmonkey\r\nwebquest\r\nwebreaper\r\nwebsitepulse\r\nwebsnarf\r\nwebstolperer\r\nwebvac\r\nwebwalk\r\nwebwatch\r\nwebwombat\r\nwebzinger\r\nwhizbang\r\nwhowhere\r\nwild ferret\r\nworldlight\r\nwwwc\r\nwwwster\r\nxenu\r\nxget\r\nxift\r\nxirq\r\nyandex\r\nyanga\r\nyeti\r\nyodao\r\nzao\r\nzippp\r\nzyborg', 0),
+(0, 'config', 'config_shared', '0', 0),
+(0, 'config', 'config_secure', '0', 0),
+(0, 'voucher', 'voucher_sort_order', '8', 0),
+(0, 'voucher', 'voucher_status', '1', 0),
+(0, 'config', 'config_fraud_detection', '0', 0),
+(0, 'config', 'config_alert_email', '', 0),
+(0, 'config', 'config_ftp_status', '0', 0),
+(0, 'config', 'config_ftp_root', '', 0),
+(0, 'config', 'config_ftp_password', '', 0),
+(0, 'config', 'config_ftp_username', '', 0),
+(0, 'config', 'config_ftp_port', '21', 0),
+(0, 'config', 'config_ftp_hostname', '', 0),
+(0, 'config', 'config_meta_title', 'Ваш Магазин', 0),
+(0, 'config', 'config_meta_description', 'Мій магазин', 0),
+(0, 'config', 'config_meta_keyword', '', 0),
+(0, 'config', 'config_theme', 'theme_default', 0),
+(0, 'config', 'config_layout_id', '4', 0),
+(0, 'config', 'config_country_id', '176', 0),
+(0, 'config', 'config_zone_id', '2785', 0),
+(0, 'config', 'config_language', 'ru-ru', 0),
+(0, 'config', 'config_admin_language', 'ru-ru', 0),
+(0, 'config', 'config_currency', 'RUB', 0),
+(0, 'config', 'config_currency_auto', '1', 0),
+(0, 'config', 'config_length_class_id', '1', 0),
+(0, 'config', 'config_weight_class_id', '1', 0),
+(0, 'config', 'config_product_count', '0', 0),
+(0, 'config', 'config_limit_admin', '20', 0),
+(0, 'config', 'config_review_status', '1', 0),
+(0, 'config', 'config_review_guest', '1', 0),
+(0, 'config', 'config_voucher_min', '1', 0),
+(0, 'config', 'config_voucher_max', '1000', 0),
+(0, 'config', 'config_tax', '1', 0),
+(0, 'config', 'config_tax_default', 'shipping', 0),
+(0, 'config', 'config_tax_customer', 'shipping', 0),
+(0, 'config', 'config_customer_online', '0', 0),
+(0, 'config', 'config_customer_activity', '0', 0),
+(0, 'config', 'config_customer_search', '0', 0),
+(0, 'config', 'config_customer_group_id', '1', 0),
+(0, 'config', 'config_customer_group_display', '["1"]', 1),
+(0, 'config', 'config_customer_price', '0', 0),
+(0, 'config', 'config_account_id', '3', 0),
+(0, 'config', 'config_invoice_prefix', 'INV-2013-00', 0),
+(0, 'config', 'config_api_id', '1', 0),
+(0, 'config', 'config_cart_weight', '1', 0),
+(0, 'config', 'config_checkout_guest', '1', 0),
+(0, 'config', 'config_checkout_id', '5', 0),
+(0, 'config', 'config_order_status_id', '1', 0),
+(0, 'config', 'config_processing_status', '["5","1","2","12","3"]', 1),
+(0, 'config', 'config_complete_status', '["5","3"]', 1),
+(0, 'config', 'config_stock_display', '0', 0),
+(0, 'config', 'config_stock_warning', '0', 0),
+(0, 'config', 'config_stock_checkout', '0', 0),
+(0, 'config', 'config_affiliate_approval', '0', 0),
+(0, 'config', 'config_affiliate_auto', '0', 0),
+(0, 'config', 'config_affiliate_commission', '5', 0),
+(0, 'config', 'config_affiliate_id', '4', 0),
+(0, 'config', 'config_return_id', '0', 0),
+(0, 'config', 'config_return_status_id', '2', 0),
+(0, 'config', 'config_logo', 'catalog/logo.png', 0),
+(0, 'config', 'config_icon', 'catalog/cart.png', 0),
+(0, 'config', 'config_comment', '', 0),
+(0, 'config', 'config_open', '', 0),
+(0, 'config', 'config_image', '', 0),
+(0, 'config', 'config_fax', '', 0),
+(0, 'config', 'config_telephone', '123456789', 0),
+(0, 'config', 'config_email', 'admin@store.ru', 0),
+(0, 'config', 'config_geocode', '54.718681,20.499113', 0),
+(0, 'config', 'config_owner', 'Мое Имя', 0),
+(0, 'config', 'config_address', 'Адрес', 0),
+(0, 'config', 'config_name', 'Мой Магазин', 0),
+(0, 'config', 'config_seo_url', '0', 0),
+(0, 'config', 'config_file_max_size', '300000', 0),
+(0, 'config', 'config_file_ext_allowed', 'zip\r\ntxt\r\npng\r\njpe\r\njpeg\r\njpg\r\ngif\r\nbmp\r\nico\r\ntiff\r\ntif\r\nsvg\r\nsvgz\r\nzip\r\nrar\r\nmsi\r\ncab\r\nmp3\r\nqt\r\nmov\r\npdf\r\npsd\r\nai\r\neps\r\nps\r\ndoc', 0),
+(0, 'config', 'config_seo_pro_utm', 'block\r\nfrommarket\r\ngclid\r\nkeyword\r\nlist_type\r\nopenstat\r\nopenstat_service\r\nopenstat_campaign\r\nopenstat_ad\r\nopenstat_source\r\nposition\r\nsource\r\ntracking\r\ntype\r\nyclid\r\nymclid\r\nuri\r\nurltype\r\nutm_source\r\nutm_medium\r\nutm_campaign\r\nutm_term\r\nutm_content', 0),
+(0, 'config', 'config_file_mime_allowed', 'text/plain\r\nimage/png\r\nimage/jpeg\r\nimage/gif\r\nimage/bmp\r\nimage/tiff\r\nimage/svg+xml\r\napplication/zip\r\n&quot;application/zip&quot;\r\napplication/x-zip\r\n&quot;application/x-zip&quot;\r\napplication/x-zip-compressed\r\n&quot;application/x-zip-compressed&quot;\r\napplication/rar\r\n&quot;application/rar&quot;\r\napplication/x-rar\r\n&quot;application/x-rar&quot;\r\napplication/x-rar-compressed\r\n&quot;application/x-rar-compressed&quot;\r\napplication/octet-stream\r\n&quot;application/octet-stream&quot;\r\naudio/mpeg\r\nvideo/quicktime\r\napplication/pdf', 0),
+(0, 'config', 'config_maintenance', '0', 0),
+(0, 'config', 'config_password', '1', 0),
+(0, 'config', 'config_encryption', '87431d38e7edce36d5153707d4cd2bf9', 0),
+(0, 'config', 'config_compression', '0', 0),
+(0, 'config', 'config_error_display', '1', 0),
+(0, 'config', 'config_error_log', '1', 0),
+(0, 'config', 'config_error_filename', 'error.log', 0),
+(0, 'config', 'config_google_analytics', '', 0),
+(0, 'config', 'config_mail_protocol', 'mail', 0),
+(0, 'config', 'config_mail_parameter', '', 0),
+(0, 'config', 'config_mail_smtp_hostname', '', 0),
+(0, 'config', 'config_mail_smtp_username', '', 0),
+(0, 'config', 'config_mail_smtp_password', '', 0),
+(0, 'config', 'config_mail_smtp_port', '25', 0),
+(0, 'config', 'config_mail_smtp_timeout', '5', 0),
+(0, 'config', 'config_mail_alert', '["order"]', 1),
+(0, 'config', 'config_captcha', 'basic_captcha', 0),
+(0, 'config', 'config_captcha_page', '["review","return","contact"]', 1),
+(0, 'config', 'config_login_attempts', '5', 0),
+(0, 'free_checkout', 'free_checkout_status', '1', 0),
+(0, 'free_checkout', 'free_checkout_order_status_id', '1', 0),
+(0, 'shipping', 'shipping_sort_order', '3', 0),
+(0, 'sub_total', 'sub_total_sort_order', '1', 0),
+(0, 'sub_total', 'sub_total_status', '1', 0),
+(0, 'tax', 'tax_status', '1', 0),
+(0, 'total', 'total_sort_order', '9', 0),
+(0, 'total', 'total_status', '1', 0),
+(0, 'tax', 'tax_sort_order', '5', 0),
+(0, 'free_checkout', 'free_checkout_sort_order', '1', 0),
+(0, 'cod', 'cod_sort_order', '5', 0),
+(0, 'cod', 'cod_total', '0.01', 0),
+(0, 'cod', 'cod_order_status_id', '1', 0),
+(0, 'cod', 'cod_geo_zone_id', '0', 0),
+(0, 'cod', 'cod_status', '1', 0),
+(0, 'shipping', 'shipping_status', '1', 0),
+(0, 'shipping', 'shipping_estimator', '1', 0),
+(0, 'coupon', 'coupon_sort_order', '4', 0),
+(0, 'coupon', 'coupon_status', '1', 0),
+(0, 'flat', 'flat_sort_order', '1', 0),
+(0, 'flat', 'flat_status', '1', 0),
+(0, 'flat', 'flat_geo_zone_id', '0', 0),
+(0, 'flat', 'flat_tax_class_id', '9', 0),
+(0, 'flat', 'flat_cost', '5.00', 0),
+(0, 'credit', 'credit_sort_order', '7', 0),
+(0, 'credit', 'credit_status', '1', 0),
+(0, 'reward', 'reward_sort_order', '2', 0),
+(0, 'reward', 'reward_status', '1', 0),
+(0, 'category', 'category_status', '1', 0),
+(0, 'account', 'account_status', '1', 0),
+(0, 'affiliate', 'affiliate_status', '1', 0),
+(0, 'theme_default', 'theme_default_product_limit', '15', 0),
+(0, 'theme_default', 'theme_default_product_description_length', '100', 0),
+(0, 'theme_default', 'theme_default_image_thumb_width', '228', 0),
+(0, 'theme_default', 'theme_default_image_thumb_height', '228', 0),
+(0, 'theme_default', 'theme_default_image_popup_width', '500', 0),
+(0, 'theme_default', 'theme_default_image_popup_height', '500', 0),
+(0, 'theme_default', 'theme_default_image_category_width', '80', 0),
+(0, 'theme_default', 'theme_default_image_category_height', '80', 0),
+(0, 'theme_default', 'theme_default_image_product_width', '228', 0),
+(0, 'theme_default', 'theme_default_image_product_height', '228', 0),
+(0, 'theme_default', 'theme_default_image_additional_width', '74', 0),
+(0, 'theme_default', 'theme_default_image_additional_height', '74', 0),
+(0, 'theme_default', 'theme_default_image_related_width', '200', 0),
+(0, 'theme_default', 'theme_default_image_related_height', '200', 0),
+(0, 'theme_default', 'theme_default_image_compare_width', '90', 0),
+(0, 'theme_default', 'theme_default_image_compare_height', '90', 0),
+(0, 'theme_default', 'theme_default_image_wishlist_width', '47', 0),
+(0, 'theme_default', 'theme_default_image_wishlist_height', '47', 0),
+(0, 'theme_default', 'theme_default_image_cart_height', '47', 0),
+(0, 'theme_default', 'theme_default_image_cart_width', '47', 0),
+(0, 'theme_default', 'theme_default_image_location_height', '50', 0),
+(0, 'theme_default', 'theme_default_image_location_width', '268', 0),
+(0, 'theme_default', 'theme_default_directory', 'default', 0),
+(0, 'theme_default', 'theme_default_status', '1', 0),
+(0, 'dashboard_activity', 'dashboard_activity_status', '1', 0),
+(0, 'dashboard_activity', 'dashboard_activity_sort_order', '7', 0),
+(0, 'dashboard_sale', 'dashboard_sale_status', '1', 0),
+(0, 'dashboard_sale', 'dashboard_sale_width', '3', 0),
+(0, 'dashboard_chart', 'dashboard_chart_status', '1', 0),
+(0, 'dashboard_chart', 'dashboard_chart_width', '6', 0),
+(0, 'dashboard_customer', 'dashboard_customer_status', '1', 0),
+(0, 'dashboard_customer', 'dashboard_customer_width', '3', 0),
+(0, 'dashboard_map', 'dashboard_map_status', '1', 0),
+(0, 'dashboard_map', 'dashboard_map_width', '6', 0),
+(0, 'dashboard_online', 'dashboard_online_status', '1', 0),
+(0, 'dashboard_online', 'dashboard_online_width', '3', 0),
+(0, 'dashboard_order', 'dashboard_order_sort_order', '1', 0),
+(0, 'dashboard_order', 'dashboard_order_status', '1', 0),
+(0, 'dashboard_order', 'dashboard_order_width', '3', 0),
+(0, 'dashboard_sale', 'dashboard_sale_sort_order', '2', 0),
+(0, 'dashboard_customer', 'dashboard_customer_sort_order', '3', 0),
+(0, 'dashboard_online', 'dashboard_online_sort_order', '4', 0),
+(0, 'dashboard_map', 'dashboard_map_sort_order', '5', 0),
+(0, 'dashboard_chart', 'dashboard_chart_sort_order', '6', 0),
+(0, 'dashboard_recent', 'dashboard_recent_status', '1', 0),
+(0, 'dashboard_recent', 'dashboard_recent_sort_order', '8', 0),
+(0, 'dashboard_activity', 'dashboard_activity_width', '4', 0),
+(0, 'dashboard_recent', 'dashboard_recent_width', '8', 0),
+(0, 'config', 'config_seo_url_type', 'seo_url', 0),
+(0, 'config', 'config_mail_regexp', '/^[^\@]+@.*.[a-z]{2,15}$/i', 0),
+(0, 'config', 'config_langdata', '{"1":{"meta_title":"Мій магазин","meta_description":"Мой Магазин","meta_keyword":"","name":"Мій магазин","owner":"Моє Ім''я","address":"Адрес","open":"з 10 до 18\\r\\nобід з 14 до 15\\r\\nнеділя - вихідний","comment":""},"3":{"meta_title":"Your Store","meta_description":"My Store","meta_keyword":"","name":"Your Store","owner":"Your Name","address":"Address 1","open":"","comment":""}}', 1);
 -- --------------------------------------------------------
 
 --
@@ -3688,6 +3814,39 @@ INSERT INTO `oc_tax_rule` (`tax_rule_id`, `tax_class_id`, `tax_rate_id`, `based`
 (120, 10, 87, 'store', 0),
 (128, 9, 86, 'shipping', 1),
 (127, 9, 87, 'shipping', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oc_theme`
+--
+
+DROP TABLE IF EXISTS `oc_theme`;
+CREATE TABLE `oc_theme` (
+  `theme_id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `theme` varchar(64) NOT NULL,
+  `route` varchar(64) NOT NULL,
+  `code` text NOT NULL,
+  PRIMARY KEY (`theme_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oc_translation`
+--
+
+DROP TABLE IF EXISTS `oc_translation`;
+CREATE TABLE `oc_translation` (
+  `translation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `route` varchar(64) NOT NULL,
+  `key` varchar(64) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`translation_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -3875,7 +4034,7 @@ CREATE TABLE `oc_user_group` (
 --
 
 INSERT INTO `oc_user_group` (`user_group_id`, `name`, `permission`) VALUES
-(1, 'Administrator', '{"access":["analytics\/google_analytics","captcha\/basic_captcha","captcha\/google_captcha","catalog\/attribute","catalog\/attribute_group","catalog\/category","catalog\/download","catalog\/filter","catalog\/information","catalog\/manufacturer","catalog\/option","catalog\/product","catalog\/recurring","catalog\/review","common\/column_left","common\/filemanager","common\/menu","common\/profile","common\/sass","common\/stats","customer\/custom_field","customer\/customer","customer\/customer_group","design\/banner","design\/layout","extension\/analytics","extension\/captcha","extension\/feed","extension\/fraud","extension\/installer","extension\/modification","extension\/module","extension\/openbay","extension\/payment","extension\/shipping","extension\/total","feed\/google_base","feed\/google_sitemap","feed\/openbaypro","fraud\/fraudlabspro","fraud\/ip","fraud\/maxmind","localisation\/country","localisation\/currency","localisation\/geo_zone","localisation\/language","localisation\/length_class","localisation\/location","localisation\/order_status","localisation\/return_action","localisation\/return_reason","localisation\/return_status","localisation\/stock_status","localisation\/tax_class","localisation\/tax_rate","localisation\/weight_class","localisation\/zone","marketing\/affiliate","marketing\/contact","marketing\/coupon","marketing\/marketing","module\/account","module\/affiliate","module\/amazon_login","module\/amazon_pay","module\/banner","module\/bestseller","module\/carousel","module\/category","module\/ebay_listing","module\/featured","module\/filter","module\/google_hangouts","module\/html","module\/information","module\/latest","module\/pp_button","module\/pp_login","module\/slideshow","module\/special","module\/store","module\/unisender","octeam\/toolset","octeam_tools\/cache","openbay\/amazon","openbay\/amazon_listing","openbay\/amazon_product","openbay\/amazonus","openbay\/amazonus_listing","openbay\/amazonus_product","openbay\/ebay","openbay\/ebay_profile","openbay\/ebay_template","openbay\/etsy","openbay\/etsy_product","openbay\/etsy_shipping","openbay\/etsy_shop","payment\/amazon_login_pay","payment\/authorizenet_aim","payment\/authorizenet_sim","payment\/bank_transfer","payment\/bluepay_hosted","payment\/bluepay_redirect","payment\/cheque","payment\/cod","payment\/firstdata","payment\/firstdata_remote","payment\/free_checkout","payment\/g2apay","payment\/globalpay","payment\/globalpay_remote","payment\/klarna_account","payment\/klarna_invoice","payment\/liqpay","payment\/nochex","payment\/paymate","payment\/paypoint","payment\/payza","payment\/perpetual_payments","payment\/pp_express","payment\/pp_payflow","payment\/pp_payflow_iframe","payment\/pp_pro","payment\/pp_pro_iframe","payment\/pp_standard","payment\/qiwi_rest","payment\/realex","payment\/realex_remote","payment\/sagepay_direct","payment\/sagepay_server","payment\/sagepay_us","payment\/sberbank_transfer","payment\/securetrading_pp","payment\/securetrading_ws","payment\/skrill","payment\/twocheckout","payment\/web_payment_software","payment\/worldpay","report\/affiliate","report\/affiliate_activity","report\/affiliate_login","report\/customer_activity","report\/customer_credit","report\/customer_login","report\/customer_online","report\/customer_order","report\/customer_reward","report\/marketing","report\/product_purchased","report\/product_viewed","report\/sale_coupon","report\/sale_order","report\/sale_return","report\/sale_shipping","report\/sale_tax","sale\/order","sale\/recurring","sale\/return","sale\/voucher","sale\/voucher_theme","setting\/setting","setting\/store","shipping\/auspost","shipping\/citylink","shipping\/fedex","shipping\/flat","shipping\/free","shipping\/item","shipping\/parcelforce_48","shipping\/pickup","shipping\/royal_mail","shipping\/ups","shipping\/usps","shipping\/weight","tool\/backup","tool\/error_log","tool\/upload","total\/coupon","total\/credit","total\/handling","total\/klarna_fee","total\/low_order_fee","total\/reward","total\/shipping","total\/sub_total","total\/tax","total\/total","total\/voucher","user\/api","user\/user","user\/user_permission"],"modify":["analytics\/google_analytics","captcha\/basic_captcha","captcha\/google_captcha","catalog\/attribute","catalog\/attribute_group","catalog\/category","catalog\/download","catalog\/filter","catalog\/information","catalog\/manufacturer","catalog\/option","catalog\/product","catalog\/recurring","catalog\/review","common\/column_left","common\/filemanager","common\/menu","common\/profile","common\/sass","common\/stats","customer\/custom_field","customer\/customer","customer\/customer_group","design\/banner","design\/layout","extension\/analytics","extension\/captcha","extension\/feed","extension\/fraud","extension\/installer","extension\/modification","extension\/module","extension\/openbay","extension\/payment","extension\/shipping","extension\/total","feed\/google_base","feed\/google_sitemap","feed\/openbaypro","fraud\/fraudlabspro","fraud\/ip","fraud\/maxmind","localisation\/country","localisation\/currency","localisation\/geo_zone","localisation\/language","localisation\/length_class","localisation\/location","localisation\/order_status","localisation\/return_action","localisation\/return_reason","localisation\/return_status","localisation\/stock_status","localisation\/tax_class","localisation\/tax_rate","localisation\/weight_class","localisation\/zone","marketing\/affiliate","marketing\/contact","marketing\/coupon","marketing\/marketing","module\/account","module\/affiliate","module\/amazon_login","module\/amazon_pay","module\/banner","module\/bestseller","module\/carousel","module\/category","module\/ebay_listing","module\/featured","module\/filter","module\/google_hangouts","module\/html","module\/information","module\/latest","module\/pp_button","module\/pp_login","module\/slideshow","module\/special","module\/store","module\/unisender","octeam\/toolset","octeam_tools\/cache","openbay\/amazon","openbay\/amazon_listing","openbay\/amazon_product","openbay\/amazonus","openbay\/amazonus_listing","openbay\/amazonus_product","openbay\/ebay","openbay\/ebay_profile","openbay\/ebay_template","openbay\/etsy","openbay\/etsy_product","openbay\/etsy_shipping","openbay\/etsy_shop","payment\/amazon_login_pay","payment\/authorizenet_aim","payment\/authorizenet_sim","payment\/bank_transfer","payment\/bluepay_hosted","payment\/bluepay_redirect","payment\/cheque","payment\/cod","payment\/firstdata","payment\/firstdata_remote","payment\/free_checkout","payment\/g2apay","payment\/globalpay","payment\/globalpay_remote","payment\/klarna_account","payment\/klarna_invoice","payment\/liqpay","payment\/nochex","payment\/paymate","payment\/paypoint","payment\/payza","payment\/perpetual_payments","payment\/pp_express","payment\/pp_payflow","payment\/pp_payflow_iframe","payment\/pp_pro","payment\/pp_pro_iframe","payment\/pp_standard","payment\/qiwi_rest","payment\/realex","payment\/realex_remote","payment\/sagepay_direct","payment\/sagepay_server","payment\/sagepay_us","payment\/sberbank_transfer","payment\/securetrading_pp","payment\/securetrading_ws","payment\/skrill","payment\/twocheckout","payment\/web_payment_software","payment\/worldpay","report\/affiliate","report\/affiliate_activity","report\/affiliate_login","report\/customer_activity","report\/customer_credit","report\/customer_login","report\/customer_online","report\/customer_order","report\/customer_reward","report\/marketing","report\/product_purchased","report\/product_viewed","report\/sale_coupon","report\/sale_order","report\/sale_return","report\/sale_shipping","report\/sale_tax","sale\/order","sale\/recurring","sale\/return","sale\/voucher","sale\/voucher_theme","setting\/setting","setting\/store","shipping\/auspost","shipping\/citylink","shipping\/fedex","shipping\/flat","shipping\/free","shipping\/item","shipping\/parcelforce_48","shipping\/pickup","shipping\/royal_mail","shipping\/ups","shipping\/usps","shipping\/weight","tool\/backup","tool\/error_log","tool\/upload","total\/coupon","total\/credit","total\/handling","total\/klarna_fee","total\/low_order_fee","total\/reward","total\/shipping","total\/sub_total","total\/tax","total\/total","total\/voucher","user\/api","user\/user","user\/user_permission"],"hiden":["module\/amazon_login","module\/amazon_pay","module\/ebay_listing","module\/pp_button","module\/pp_login","payment\/amazon_login_pay","payment\/authorizenet_aim","payment\/authorizenet_sim","payment\/bluepay_hosted","payment\/bluepay_redirect","payment\/cheque","payment\/firstdata","payment\/firstdata_remote","payment\/g2apay","payment\/globalpay","payment\/globalpay_remote","payment\/klarna_account","payment\/klarna_invoice","payment\/liqpay","payment\/nochex","payment\/paymate","payment\/paypoint","payment\/payza","payment\/perpetual_payments","payment\/pp_express","payment\/pp_payflow","payment\/pp_payflow_iframe","payment\/pp_pro","payment\/pp_pro_iframe","payment\/realex","payment\/realex_remote","payment\/sagepay_direct","payment\/sagepay_server","payment\/sagepay_us","payment\/securetrading_pp","payment\/securetrading_ws","payment\/skrill","payment\/twocheckout","payment\/web_payment_software","payment\/worldpay","shipping\/auspost","shipping\/by_total","shipping\/citylink","shipping\/fedex","shipping\/royal_mail","shipping\/ups","shipping\/usps"]}'),
+(1, 'Administrator', '{"access":["catalog\\/attribute","catalog\\/attribute_group","catalog\\/category","catalog\\/download","catalog\\/filter","catalog\\/information","catalog\\/manufacturer","catalog\\/option","catalog\\/product","catalog\\/recurring","catalog\\/review","common\\/column_left","common\\/filemanager","customer\\/custom_field","customer\\/customer","customer\\/customer_group","design\\/banner","design\\/language","design\\/layout","design\\/menu","design\\/theme","design\\/translation","event\\/compatibility","event\\/theme","extension\\/analytics\\/google_analytics","extension\\/captcha\\/basic_captcha","extension\\/captcha\\/google_captcha","extension\\/dashboard\\/activity","extension\\/dashboard\\/chart","extension\\/dashboard\\/customer","extension\\/dashboard\\/map","extension\\/dashboard\\/online","extension\\/dashboard\\/order","extension\\/dashboard\\/recent","extension\\/dashboard\\/sale","extension\\/event","extension\\/extension","extension\\/extension\\/analytics","extension\\/extension\\/captcha","extension\\/extension\\/dashboard","extension\\/extension\\/feed","extension\\/extension\\/fraud","extension\\/extension\\/module","extension\\/extension\\/payment","extension\\/extension\\/shipping","extension\\/extension\\/theme","extension\\/extension\\/total","extension\\/feed\\/google_base","extension\\/feed\\/google_sitemap","extension\\/feed\\/openbaypro","extension\\/feed\\/unisender","extension\\/fraud\\/fraudlabspro","extension\\/fraud\\/ip","extension\\/fraud\\/maxmind","extension\\/installer","extension\\/modification","extension\\/module\\/account","extension\\/module\\/affiliate","extension\\/module\\/amazon_login","extension\\/module\\/amazon_pay","extension\\/module\\/banner","extension\\/module\\/bestseller","extension\\/module\\/carousel","extension\\/module\\/category","extension\\/module\\/divido_calculator","extension\\/module\\/ebay_listing","extension\\/module\\/featured","extension\\/module\\/filter","extension\\/module\\/google_hangouts","extension\\/module\\/html","extension\\/module\\/information","extension\\/module\\/klarna_checkout_module","extension\\/module\\/latest","extension\\/module\\/laybuy_layout","extension\\/module\\/pilibaba_button","extension\\/module\\/pp_button","extension\\/module\\/pp_login","extension\\/module\\/sagepay_direct_cards","extension\\/module\\/sagepay_server_cards","extension\\/module\\/slideshow","extension\\/module\\/special","extension\\/module\\/store","extension\\/openbay","extension\\/openbay\\/amazon","extension\\/openbay\\/amazon_listing","extension\\/openbay\\/amazon_product","extension\\/openbay\\/amazonus","extension\\/openbay\\/amazonus_listing","extension\\/openbay\\/amazonus_product","extension\\/openbay\\/ebay","extension\\/openbay\\/ebay_profile","extension\\/openbay\\/ebay_template","extension\\/openbay\\/etsy","extension\\/openbay\\/etsy_product","extension\\/openbay\\/etsy_shipping","extension\\/openbay\\/etsy_shop","extension\\/openbay\\/fba","extension\\/payment\\/amazon_login_pay","extension\\/payment\\/authorizenet_aim","extension\\/payment\\/authorizenet_sim","extension\\/payment\\/bank_transfer","extension\\/payment\\/bluepay_hosted","extension\\/payment\\/bluepay_redirect","extension\\/payment\\/cardconnect","extension\\/payment\\/cardinity","extension\\/payment\\/cheque","extension\\/payment\\/cod","extension\\/payment\\/divido","extension\\/payment\\/eway","extension\\/payment\\/firstdata","extension\\/payment\\/firstdata_remote","extension\\/payment\\/free_checkout","extension\\/payment\\/g2apay","extension\\/payment\\/globalpay","extension\\/payment\\/globalpay_remote","extension\\/payment\\/klarna_account","extension\\/payment\\/klarna_checkout","extension\\/payment\\/klarna_invoice","extension\\/payment\\/laybuy","extension\\/payment\\/liqpay","extension\\/payment\\/nochex","extension\\/payment\\/ocstore_payeer","extension\\/payment\\/ocstore_w1","extension\\/payment\\/ocstore_yk","extension\\/payment\\/ocstore_yk_company_AB","extension\\/payment\\/ocstore_yk_company_AC","extension\\/payment\\/ocstore_yk_company_EP","extension\\/payment\\/ocstore_yk_company_GP","extension\\/payment\\/ocstore_yk_company_MA","extension\\/payment\\/ocstore_yk_company_MC","extension\\/payment\\/ocstore_yk_company_MP","extension\\/payment\\/ocstore_yk_company_PB","extension\\/payment\\/ocstore_yk_company_PC","extension\\/payment\\/ocstore_yk_company_QW","extension\\/payment\\/ocstore_yk_company_SB","extension\\/payment\\/ocstore_yk_company_WM","extension\\/payment\\/ocstore_yk_physical_AC","extension\\/payment\\/ocstore_yk_physical_PC","extension\\/payment\\/paymate","extension\\/payment\\/paypoint","extension\\/payment\\/payza","extension\\/payment\\/perpetual_payments","extension\\/payment\\/pilibaba","extension\\/payment\\/pp_express","extension\\/payment\\/pp_payflow","extension\\/payment\\/pp_payflow_iframe","extension\\/payment\\/pp_pro","extension\\/payment\\/pp_pro_iframe","extension\\/payment\\/pp_standard","extension\\/payment\\/qiwi_rest","extension\\/payment\\/realex","extension\\/payment\\/realex_remote","extension\\/payment\\/sagepay_direct","extension\\/payment\\/sagepay_server","extension\\/payment\\/sagepay_us","extension\\/payment\\/sberbank_transfer","extension\\/payment\\/securetrading_pp","extension\\/payment\\/securetrading_ws","extension\\/payment\\/shoputils_w1","extension\\/payment\\/skrill","extension\\/payment\\/twocheckout","extension\\/payment\\/web_payment_software","extension\\/payment\\/webmoney_wmb","extension\\/payment\\/webmoney_wme","extension\\/payment\\/webmoney_wmk","extension\\/payment\\/webmoney_wmr","extension\\/payment\\/webmoney_wmu","extension\\/payment\\/webmoney_wmz","extension\\/payment\\/worldpay","extension\\/shipping\\/auspost","extension\\/shipping\\/by_total","extension\\/shipping\\/citylink","extension\\/shipping\\/fedex","extension\\/shipping\\/flat","extension\\/shipping\\/free","extension\\/shipping\\/item","extension\\/shipping\\/parcelforce_48","extension\\/shipping\\/pickup","extension\\/shipping\\/royal_mail","extension\\/shipping\\/track_no","extension\\/shipping\\/ups","extension\\/shipping\\/usps","extension\\/shipping\\/weight","extension\\/store","extension\\/theme\\/theme_default","extension\\/total\\/coupon","extension\\/total\\/credit","extension\\/total\\/handling","extension\\/total\\/klarna_fee","extension\\/total\\/low_order_fee","extension\\/total\\/reward","extension\\/total\\/shipping","extension\\/total\\/sub_total","extension\\/total\\/tax","extension\\/total\\/total","extension\\/total\\/voucher","localisation\\/country","localisation\\/currency","localisation\\/geo_zone","localisation\\/language","localisation\\/length_class","localisation\\/location","localisation\\/order_status","localisation\\/return_action","localisation\\/return_reason","localisation\\/return_status","localisation\\/stock_status","localisation\\/tax_class","localisation\\/tax_rate","localisation\\/weight_class","localisation\\/zone","marketing\\/affiliate","marketing\\/contact","marketing\\/coupon","marketing\\/marketing","octeam\\/toolset","octeam_tools\\/cache","octeam_tools\\/seo_manager","report\\/affiliate","report\\/affiliate_activity","report\\/affiliate_login","report\\/customer_activity","report\\/customer_credit","report\\/customer_login","report\\/customer_online","report\\/customer_order","report\\/customer_reward","report\\/customer_search","report\\/marketing","report\\/product_purchased","report\\/product_viewed","report\\/sale_coupon","report\\/sale_order","report\\/sale_return","report\\/sale_shipping","report\\/sale_tax","sale\\/order","sale\\/recurring","sale\\/return","sale\\/voucher","sale\\/voucher_theme","setting\\/setting","setting\\/store","startup\\/compatibility","startup\\/error","startup\\/event","startup\\/login","startup\\/permission","startup\\/router","startup\\/sass","startup\\/startup","tool\\/backup","tool\\/log","tool\\/upload","user\\/api","user\\/user","user\\/user_permission"],"modify":["catalog\\/attribute","catalog\\/attribute_group","catalog\\/category","catalog\\/download","catalog\\/filter","catalog\\/information","catalog\\/manufacturer","catalog\\/option","catalog\\/product","catalog\\/recurring","catalog\\/review","common\\/column_left","common\\/filemanager","customer\\/custom_field","customer\\/customer","customer\\/customer_group","design\\/banner","design\\/language","design\\/layout","design\\/menu","design\\/theme","design\\/translation","event\\/compatibility","event\\/theme","extension\\/analytics\\/google_analytics","extension\\/captcha\\/basic_captcha","extension\\/captcha\\/google_captcha","extension\\/dashboard\\/activity","extension\\/dashboard\\/chart","extension\\/dashboard\\/customer","extension\\/dashboard\\/map","extension\\/dashboard\\/online","extension\\/dashboard\\/order","extension\\/dashboard\\/recent","extension\\/dashboard\\/sale","extension\\/event","extension\\/extension","extension\\/extension\\/analytics","extension\\/extension\\/captcha","extension\\/extension\\/dashboard","extension\\/extension\\/feed","extension\\/extension\\/fraud","extension\\/extension\\/module","extension\\/extension\\/payment","extension\\/extension\\/shipping","extension\\/extension\\/theme","extension\\/extension\\/total","extension\\/feed\\/google_base","extension\\/feed\\/google_sitemap","extension\\/feed\\/openbaypro","extension\\/feed\\/unisender","extension\\/fraud\\/fraudlabspro","extension\\/fraud\\/ip","extension\\/fraud\\/maxmind","extension\\/installer","extension\\/modification","extension\\/module\\/account","extension\\/module\\/affiliate","extension\\/module\\/amazon_login","extension\\/module\\/amazon_pay","extension\\/module\\/banner","extension\\/module\\/bestseller","extension\\/module\\/carousel","extension\\/module\\/category","extension\\/module\\/divido_calculator","extension\\/module\\/ebay_listing","extension\\/module\\/featured","extension\\/module\\/filter","extension\\/module\\/google_hangouts","extension\\/module\\/html","extension\\/module\\/information","extension\\/module\\/klarna_checkout_module","extension\\/module\\/latest","extension\\/module\\/laybuy_layout","extension\\/module\\/pilibaba_button","extension\\/module\\/pp_button","extension\\/module\\/pp_login","extension\\/module\\/sagepay_direct_cards","extension\\/module\\/sagepay_server_cards","extension\\/module\\/slideshow","extension\\/module\\/special","extension\\/module\\/store","extension\\/openbay","extension\\/openbay\\/amazon","extension\\/openbay\\/amazon_listing","extension\\/openbay\\/amazon_product","extension\\/openbay\\/amazonus","extension\\/openbay\\/amazonus_listing","extension\\/openbay\\/amazonus_product","extension\\/openbay\\/ebay","extension\\/openbay\\/ebay_profile","extension\\/openbay\\/ebay_template","extension\\/openbay\\/etsy","extension\\/openbay\\/etsy_product","extension\\/openbay\\/etsy_shipping","extension\\/openbay\\/etsy_shop","extension\\/openbay\\/fba","extension\\/payment\\/amazon_login_pay","extension\\/payment\\/authorizenet_aim","extension\\/payment\\/authorizenet_sim","extension\\/payment\\/bank_transfer","extension\\/payment\\/bluepay_hosted","extension\\/payment\\/bluepay_redirect","extension\\/payment\\/cardconnect","extension\\/payment\\/cardinity","extension\\/payment\\/cheque","extension\\/payment\\/cod","extension\\/payment\\/divido","extension\\/payment\\/eway","extension\\/payment\\/firstdata","extension\\/payment\\/firstdata_remote","extension\\/payment\\/free_checkout","extension\\/payment\\/g2apay","extension\\/payment\\/globalpay","extension\\/payment\\/globalpay_remote","extension\\/payment\\/klarna_account","extension\\/payment\\/klarna_checkout","extension\\/payment\\/klarna_invoice","extension\\/payment\\/laybuy","extension\\/payment\\/liqpay","extension\\/payment\\/nochex","extension\\/payment\\/ocstore_payeer","extension\\/payment\\/ocstore_w1","extension\\/payment\\/ocstore_yk","extension\\/payment\\/ocstore_yk_company_AB","extension\\/payment\\/ocstore_yk_company_AC","extension\\/payment\\/ocstore_yk_company_EP","extension\\/payment\\/ocstore_yk_company_GP","extension\\/payment\\/ocstore_yk_company_MA","extension\\/payment\\/ocstore_yk_company_MC","extension\\/payment\\/ocstore_yk_company_MP","extension\\/payment\\/ocstore_yk_company_PB","extension\\/payment\\/ocstore_yk_company_PC","extension\\/payment\\/ocstore_yk_company_QW","extension\\/payment\\/ocstore_yk_company_SB","extension\\/payment\\/ocstore_yk_company_WM","extension\\/payment\\/ocstore_yk_physical_AC","extension\\/payment\\/ocstore_yk_physical_PC","extension\\/payment\\/paymate","extension\\/payment\\/paypoint","extension\\/payment\\/payza","extension\\/payment\\/perpetual_payments","extension\\/payment\\/pilibaba","extension\\/payment\\/pp_express","extension\\/payment\\/pp_payflow","extension\\/payment\\/pp_payflow_iframe","extension\\/payment\\/pp_pro","extension\\/payment\\/pp_pro_iframe","extension\\/payment\\/pp_standard","extension\\/payment\\/qiwi_rest","extension\\/payment\\/realex","extension\\/payment\\/realex_remote","extension\\/payment\\/sagepay_direct","extension\\/payment\\/sagepay_server","extension\\/payment\\/sagepay_us","extension\\/payment\\/sberbank_transfer","extension\\/payment\\/securetrading_pp","extension\\/payment\\/securetrading_ws","extension\\/payment\\/shoputils_w1","extension\\/payment\\/skrill","extension\\/payment\\/twocheckout","extension\\/payment\\/web_payment_software","extension\\/payment\\/webmoney_wmb","extension\\/payment\\/webmoney_wme","extension\\/payment\\/webmoney_wmk","extension\\/payment\\/webmoney_wmr","extension\\/payment\\/webmoney_wmu","extension\\/payment\\/webmoney_wmz","extension\\/payment\\/worldpay","extension\\/shipping\\/auspost","extension\\/shipping\\/by_total","extension\\/shipping\\/citylink","extension\\/shipping\\/fedex","extension\\/shipping\\/flat","extension\\/shipping\\/free","extension\\/shipping\\/item","extension\\/shipping\\/parcelforce_48","extension\\/shipping\\/pickup","extension\\/shipping\\/royal_mail","extension\\/shipping\\/track_no","extension\\/shipping\\/ups","extension\\/shipping\\/usps","extension\\/shipping\\/weight","extension\\/store","extension\\/theme\\/theme_default","extension\\/total\\/coupon","extension\\/total\\/credit","extension\\/total\\/handling","extension\\/total\\/klarna_fee","extension\\/total\\/low_order_fee","extension\\/total\\/reward","extension\\/total\\/shipping","extension\\/total\\/sub_total","extension\\/total\\/tax","extension\\/total\\/total","extension\\/total\\/voucher","localisation\\/country","localisation\\/currency","localisation\\/geo_zone","localisation\\/language","localisation\\/length_class","localisation\\/location","localisation\\/order_status","localisation\\/return_action","localisation\\/return_reason","localisation\\/return_status","localisation\\/stock_status","localisation\\/tax_class","localisation\\/tax_rate","localisation\\/weight_class","localisation\\/zone","marketing\\/affiliate","marketing\\/contact","marketing\\/coupon","marketing\\/marketing","octeam\\/toolset","octeam_tools\\/cache","octeam_tools\\/seo_manager","report\\/affiliate","report\\/affiliate_activity","report\\/affiliate_login","report\\/customer_activity","report\\/customer_credit","report\\/customer_login","report\\/customer_online","report\\/customer_order","report\\/customer_reward","report\\/customer_search","report\\/marketing","report\\/product_purchased","report\\/product_viewed","report\\/sale_coupon","report\\/sale_order","report\\/sale_return","report\\/sale_shipping","report\\/sale_tax","sale\\/order","sale\\/recurring","sale\\/return","sale\\/voucher","sale\\/voucher_theme","setting\\/setting","setting\\/store","startup\\/compatibility","startup\\/error","startup\\/event","startup\\/login","startup\\/permission","startup\\/router","startup\\/sass","startup\\/startup","tool\\/backup","tool\\/log","tool\\/upload","user\\/api","user\\/user","user\\/user_permission"],"hiden":["extension\\/module\\/amazon_login","extension\\/module\\/amazon_pay","extension\\/module\\/divido_calculator","extension\\/module\\/ebay_listing","extension\\/module\\/klarna_checkout_module","extension\\/module\\/laybuy_layout","extension\\/module\\/pilibaba_button","extension\\/module\\/pp_button","extension\\/module\\/pp_login","extension\\/module\\/sagepay_direct_cards","extension\\/module\\/sagepay_server_cards","extension\\/payment\\/amazon_login_pay","extension\\/payment\\/authorizenet_aim","extension\\/payment\\/authorizenet_sim","extension\\/payment\\/bluepay_hosted","extension\\/payment\\/bluepay_redirect","extension\\/payment\\/cardconnect","extension\\/payment\\/cardinity","extension\\/payment\\/cheque","extension\\/payment\\/divido","extension\\/payment\\/eway","extension\\/payment\\/firstdata","extension\\/payment\\/firstdata_remote","extension\\/payment\\/g2apay","extension\\/payment\\/globalpay","extension\\/payment\\/globalpay_remote","extension\\/payment\\/klarna_account","extension\\/payment\\/klarna_checkout","extension\\/payment\\/klarna_invoice","extension\\/payment\\/laybuy","extension\\/payment\\/nochex","extension\\/payment\\/ocstore_yk_company_AB","extension\\/payment\\/ocstore_yk_company_AC","extension\\/payment\\/ocstore_yk_company_EP","extension\\/payment\\/ocstore_yk_company_GP","extension\\/payment\\/ocstore_yk_company_MA","extension\\/payment\\/ocstore_yk_company_MC","extension\\/payment\\/ocstore_yk_company_MP","extension\\/payment\\/ocstore_yk_company_PB","extension\\/payment\\/ocstore_yk_company_PC","extension\\/payment\\/ocstore_yk_company_QW","extension\\/payment\\/ocstore_yk_company_SB","extension\\/payment\\/ocstore_yk_company_WM","extension\\/payment\\/ocstore_yk_physical_AC","extension\\/payment\\/ocstore_yk_physical_PC","extension\\/payment\\/paymate","extension\\/payment\\/paypoint","extension\\/payment\\/payza","extension\\/payment\\/perpetual_payments","extension\\/payment\\/pilibaba","extension\\/payment\\/pp_express","extension\\/payment\\/pp_payflow","extension\\/payment\\/pp_payflow_iframe","extension\\/payment\\/pp_pro","extension\\/payment\\/pp_pro_iframe","extension\\/payment\\/realex","extension\\/payment\\/realex_remote","extension\\/payment\\/sagepay_direct","extension\\/payment\\/sagepay_server","extension\\/payment\\/sagepay_us","extension\\/payment\\/securetrading_pp","extension\\/payment\\/securetrading_ws","extension\\/payment\\/skrill","extension\\/payment\\/twocheckout","extension\\/payment\\/web_payment_software","extension\\/payment\\/worldpay","extension\\/shipping\\/auspost","extension\\/shipping\\/fedex","extension\\/shipping\\/royal_mail","extension\\/shipping\\/ups","extension\\/shipping\\/usps"]}'),
 (10, 'Demonstration', '');
 
 -- --------------------------------------------------------
@@ -8133,7 +8292,8 @@ INSERT INTO `oc_zone` (`zone_id`, `country_id`, `name`, `code`, `status`) VALUES
 (4220, 117, 'Zilupe, Zilupes novads', '0681817', 1),
 (4221, 117, 'Zilupes novads', '0681801', 1),
 (4222, 43, 'Arica y Parinacota', 'AP', 1),
-(4223, 43, 'Los Rios', 'LR', 1);
+(4223, 43, 'Los Rios', 'LR', 1),
+(4224, 220, 'Херсонская область', '65', 1);
 -- --------------------------------------------------------
 
 --

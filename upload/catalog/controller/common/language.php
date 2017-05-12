@@ -5,7 +5,7 @@ class ControllerCommonLanguage extends Controller {
 
 		$data['text_language'] = $this->language->get('text_language');
 
-		$data['action'] = $this->url->link('common/language/language', '', $this->request->server['HTTPS']);
+		$data['action'] = $this->url->link('common/language/language', '', isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1')));
 
 		$data['code'] = $this->session->data['language'];
 
@@ -18,9 +18,8 @@ class ControllerCommonLanguage extends Controller {
 		foreach ($results as $result) {
 			if ($result['status']) {
 				$data['languages'][] = array(
-					'name'  => $result['name'],
-					'code'  => $result['code'],
-					'image' => $result['image']
+					'name' => $result['name'],
+					'code' => $result['code']
 				);
 			}
 		}
@@ -29,8 +28,6 @@ class ControllerCommonLanguage extends Controller {
 			$data['redirect'] = $this->url->link('common/home');
 		} else {
 			$url_data = $this->request->get;
-
-			unset($url_data['_route_']);
 
 			$route = $url_data['route'];
 
@@ -42,14 +39,10 @@ class ControllerCommonLanguage extends Controller {
 				$url = '&' . urldecode(http_build_query($url_data, '', '&'));
 			}
 
-			$data['redirect'] = $this->url->link($route, $url, $this->request->server['HTTPS']);
+			$data['redirect'] = $this->url->link($route, $url, isset($this->request->server['HTTPS']) && (($this->request->server['HTTPS'] == 'on') || ($this->request->server['HTTPS'] == '1')));
 		}
 
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/language.tpl')) {
-			return $this->load->view($this->config->get('config_template') . '/template/common/language.tpl', $data);
-		} else {
-			return $this->load->view('default/template/common/language.tpl', $data);
-		}
+		return $this->load->view('common/language', $data);
 	}
 
 	public function language() {

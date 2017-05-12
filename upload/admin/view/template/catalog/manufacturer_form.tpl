@@ -27,25 +27,25 @@
         <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-manufacturer" class="form-horizontal">
           <ul class="nav nav-tabs" id="language">
             <?php foreach ($languages as $language) { ?>
-            <li><a href="#language<?php echo $language['language_id']; ?>" data-toggle="tab"><img src="view/image/flags/<?php echo $language['image']; ?>" title="<?php echo $language['name']; ?>" /> <?php echo $language['name']; ?></a></li>
+            <li><a href="#language<?php echo $language['language_id']; ?>" data-toggle="tab"><img src="language/<?php echo $language['code']; ?>/<?php echo $language['code']; ?>.png" title="<?php echo $language['name']; ?>" /> <?php echo $language['name']; ?></a></li>
             <?php } ?>
           </ul>
           <div class="tab-content">
-            <div class="form-group required">
-              <label class="col-sm-2 control-label" for="input-name<?php echo $language['language_id']; ?>"><?php echo $entry_name; ?></label>
-              <div class="col-sm-10">
-                <input type="text" name="name" value="<?php echo $name; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name" class="form-control" />
-                <?php if ($error_name) { ?>
-                <div class="text-danger"><?php echo $error_name; ?></div>
-                <?php } ?>
-              </div>
-            </div>
           <?php foreach ($languages as $language) { ?>
             <div class="tab-pane" id="language<?php echo $language['language_id']; ?>">
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-name<?php echo $language['language_id']; ?>"><?php echo $entry_name; ?></label>
+                <div class="col-sm-10">
+                  <input type="text" name="manufacturer_description[<?php echo $language['language_id']; ?>][name]" value="<?php echo isset($manufacturer_description[$language['language_id']]) ? $manufacturer_description[$language['language_id']]['name'] : ''; ?>" placeholder="<?php echo $entry_name; ?>" id="input-name<?php echo $language['language_id']; ?>" class="form-control" />
+                  <?php if (isset($error_name[$language['language_id']])) { ?>
+                  <div class="text-danger"><?php echo $error_name[$language['language_id']]; ?></div>
+                  <?php } ?>
+                </div>
+              </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-description<?php echo $language['language_id']; ?>"><?php echo $entry_description; ?></label>
                 <div class="col-sm-10">
-                  <textarea name="manufacturer_description[<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" id="input-description<?php echo $language['language_id']; ?>" class="form-control"><?php echo isset($manufacturer_description[$language['language_id']]) ? $manufacturer_description[$language['language_id']]['description'] : ''; ?></textarea>
+                  <textarea name="manufacturer_description[<?php echo $language['language_id']; ?>][description]" placeholder="<?php echo $entry_description; ?>" id="input-description<?php echo $language['language_id']; ?>" data-lang="<?php echo $lang; ?>" class="form-control summernote"><?php echo isset($manufacturer_description[$language['language_id']]) ? $manufacturer_description[$language['language_id']]['description'] : ''; ?></textarea>
                 </div>
               </div>
               <div class="form-group">
@@ -132,17 +132,12 @@
     </div>
   </div>
   <script type="text/javascript"><!--
+    <?php if ($ckeditor) { ?>
     <?php foreach ($languages as $language) { ?>
-      <?php if ($ckeditor) { ?>
-      ckeditorInit('input-description<?php echo $language['language_id']; ?>', '<?php echo $token; ?>');
-      <?php } else { ?>
-      $('#input-description<?php echo $language['language_id']; ?>').summernote({
-        height: 300,
-        lang:'<?php echo $lang; ?>'
-      });
+      ckeditorInit('input-description<?php echo $language['language_id']; ?>', getURLVar('token'));
       <?php } ?>
     <?php } ?>
-    //--></script>
+  //--></script>
   <script type="text/javascript"><!--
     $('#language a:first').tab('show');
     //--></script></div>

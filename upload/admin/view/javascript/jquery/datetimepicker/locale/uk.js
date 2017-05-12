@@ -1,5 +1,5 @@
 //! moment.js locale configuration
-//! locale : ukrainian (uk)
+//! locale : uk-ua (uk)
 //! author : zemlanin : https://github.com/zemlanin
 //! Author : Menelion Elensúle : https://github.com/Oire
 

@@ -1826,7 +1826,7 @@ CREATE TABLE `oc_language` (
 INSERT INTO `oc_language` (`language_id`, `name`, `code`, `locale`, `image`, `directory`, `sort_order`, `status`) VALUES
 (1, 'Russian', 'ru', 'ru_RU.UTF-8,ru_RU,russian', 'ru.png', 'russian', 1, 1),
 (2, 'English', 'en', 'en_US.UTF-8,en_US,en-gb,english', 'gb.png', 'english', 2, 1),
-(3, 'Українська', 'uk', 'uk_UA', 'ua.png', 'ukrainian', 3, 1);
+(3, 'Українська', 'uk', 'uk_UA', 'ua.png', 'uk-ua', 3, 1);
 
 -- --------------------------------------------------------
 
